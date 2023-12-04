@@ -11,9 +11,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+       setupViewController()
+
     }
-
-
+    private func setupViewController () {
+        view.backgroundColor = .systemGreen
+        title = "Post"
+    }
 }
 
