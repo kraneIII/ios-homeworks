@@ -3,21 +3,6 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubViews()
-        buttonLayout()
-        textFieldLayout()
-        fullNameLabelLayout()
-        avatarLayout()
-        statusButtonTapped()
-        labelStatusLayot()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - UILabel
     
     let fullNameLabel: UILabel = {
@@ -95,6 +80,54 @@ class ProfileHeaderView: UIView {
         button.setTitle("Show status", for: .normal)
         return button
     }()
+    
+    // MARK: - Button
+    
+    private lazy var lowButton: UIButton = {
+        let button2 = UIButton()
+        button2.setTitle("Lowest button", for: .normal)
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        button2.layer.cornerRadius = 4
+        button2.backgroundColor = .systemBlue
+        button2.layer.shadowOffset.width = 4
+        button2.layer.shadowOffset.height = 4
+        button2.layer.shadowRadius = 4
+        button2.layer.shadowColor = UIColor.black.cgColor
+        button2.layer.shadowOpacity = 0.7
+        button2.titleLabel?.textColor = .white
+
+        return button2
+    }()
+    
+    // MARK: - Init
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubViews()
+        buttonLayout()
+        textFieldLayout()
+        fullNameLabelLayout()
+        avatarLayout()
+        statusButtonTapped()
+        labelStatusLayot()
+        lowestButtonLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - LowestButtonLayout
+    func lowestButtonLayout() {
+        let safeArea = safeAreaLayoutGuide
+        addSubview(lowButton)
+        NSLayoutConstraint.activate([
+            lowButton.leftAnchor.constraint(equalTo: leftAnchor),
+            lowButton.rightAnchor.constraint(equalTo: rightAnchor),
+            lowButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        ])
+    }
+
     
     // MARK: - StutusLabelLayout
 

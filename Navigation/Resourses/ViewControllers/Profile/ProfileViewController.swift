@@ -18,6 +18,7 @@ class ProfileViewController: UIViewController {
         super.viewWillLayoutSubviews()
         view.addSubview(profileHeaderView)
         profileHeaderView.frame = view.frame
+        view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     // MARK: - Setup
@@ -26,6 +27,21 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .lightGray
         title = "Profile"
     }
+    
+    // MARK: - ProfileHeaderViewLayout
+    private func headerViewLayout() {
+        let guide = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            profileHeaderView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            profileHeaderView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            profileHeaderView.topAnchor.constraint(equalTo: guide.topAnchor),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220)
+            
+        ])
+    }
+
 }
+
+
 
 
