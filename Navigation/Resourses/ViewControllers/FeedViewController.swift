@@ -17,7 +17,7 @@ class FeedViewController: UIViewController {
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOpacity = 0.7
             button.setTitle("Pressed", for: .normal)
-            button.titleLabel?.textColor = .white
+            button.titleLabel?.textColor = .systemGray6
             button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     
             return button
@@ -32,7 +32,7 @@ class FeedViewController: UIViewController {
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOpacity = 0.7
             button.setTitle("Pressed", for: .normal)
-            button.titleLabel?.textColor = .white
+            button.titleLabel?.textColor = .systemGray6
             button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     
             return button
