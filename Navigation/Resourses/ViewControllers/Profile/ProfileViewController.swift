@@ -18,7 +18,6 @@ class ProfileViewController: UIViewController {
         super.viewWillLayoutSubviews()
         view.addSubview(profileHeaderView)
         profileHeaderView.frame = view.frame
-        view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     // MARK: - Setup

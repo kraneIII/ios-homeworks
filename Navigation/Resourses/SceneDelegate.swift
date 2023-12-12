@@ -11,23 +11,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         let feedViewController = FeedViewController()
-
-        let profileViewController = ProfileViewController()
+        
+        let logInViewController = LogInViewController()
+        
+//        let profileViewController = ProfileViewController()
         
         
         let tabBarController = UITabBarController()
         tabBarController.tabBar.backgroundColor = .systemGray6
         
         feedViewController.tabBarItem = UITabBarItem(title: "Лента пользователя", image: UIImage(systemName: "rectangle.fill.on.rectangle.fill"), tag: 0)
-        profileViewController.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person.circle" ), tag: 1)
         
-        let controllers = [feedViewController, profileViewController]
+        // MARK: - Authorisation view
+
+        logInViewController.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person.circle" ) , tag: 1)
+        
+        // MARK: - Old profile view
+        
+//        profileViewController.tabBarItem = UITabBarItem(title: "Профиль", image: UIImage(systemName: "person.circle" ), tag: 1)
+        
+        let controllers = [feedViewController,
+//                           profileViewController,
+                           logInViewController]
         tabBarController.viewControllers = controllers.map {
             UINavigationController(rootViewController: $0)
         }
                         
         window.rootViewController = tabBarController   
         window.makeKeyAndVisible()
+        
+
         
         self.window = window
         

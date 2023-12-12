@@ -10,7 +10,7 @@
 		EA94690A2B0E146D00F6DFB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9469092B0E146D00F6DFB7 /* AppDelegate.swift */; };
 		EA94690C2B0E146D00F6DFB7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94690B2B0E146D00F6DFB7 /* SceneDelegate.swift */; };
 		EA94690E2B0E146D00F6DFB7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94690D2B0E146D00F6DFB7 /* ViewController.swift */; };
-		EA9469132B0E146F00F6DFB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA9469122B0E146F00F6DFB7 /* Assets.xcassets */; };
+		EA9469132B0E146F00F6DFB7 /* Accent color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA9469122B0E146F00F6DFB7 /* Accent color.xcassets */; };
 		EA9469162B0E146F00F6DFB7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA9469142B0E146F00F6DFB7 /* LaunchScreen.storyboard */; };
 		EA94691E2B0E906C00F6DFB7 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94691D2B0E906C00F6DFB7 /* FeedViewController.swift */; };
 		EA9469202B0E90CA00F6DFB7 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94691F2B0E90CA00F6DFB7 /* ProfileViewController.swift */; };
@@ -18,6 +18,7 @@
 		EA9469272B0FB6BB00F6DFB7 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9469262B0FB6BB00F6DFB7 /* InfoViewController.swift */; };
 		EA94692A2B0FE60E00F6DFB7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9469292B0FE60E00F6DFB7 /* Post.swift */; };
 		EAA454352B13E56100636F07 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA454342B13E56100636F07 /* ProfileHeaderView.swift */; };
+		EAA4543F2B2637B400636F07 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA4543E2B2637B400636F07 /* LogInViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,7 @@
 		EA9469092B0E146D00F6DFB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA94690B2B0E146D00F6DFB7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		EA94690D2B0E146D00F6DFB7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		EA9469122B0E146F00F6DFB7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EA9469122B0E146F00F6DFB7 /* Accent color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Accent color.xcassets"; sourceTree = "<group>"; };
 		EA9469152B0E146F00F6DFB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA9469172B0E146F00F6DFB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA94691D2B0E906C00F6DFB7 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +35,7 @@
 		EA9469262B0FB6BB00F6DFB7 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		EA9469292B0FE60E00F6DFB7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		EAA454342B13E56100636F07 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		EAA4543E2B2637B400636F07 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				EA9469222B0E916A00F6DFB7 /* Resourses */,
-				EA9469122B0E146F00F6DFB7 /* Assets.xcassets */,
+				EA9469122B0E146F00F6DFB7 /* Accent color.xcassets */,
 				EA9469142B0E146F00F6DFB7 /* LaunchScreen.storyboard */,
 				EA9469172B0E146F00F6DFB7 /* Info.plist */,
 			);
@@ -110,6 +112,7 @@
 			children = (
 				EA94691F2B0E90CA00F6DFB7 /* ProfileViewController.swift */,
 				EAA454342B13E56100636F07 /* ProfileHeaderView.swift */,
+				EAA4543E2B2637B400636F07 /* LogInViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -173,7 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA9469162B0E146F00F6DFB7 /* LaunchScreen.storyboard in Resources */,
-				EA9469132B0E146F00F6DFB7 /* Assets.xcassets in Resources */,
+				EA9469132B0E146F00F6DFB7 /* Accent color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +195,7 @@
 				EA9469272B0FB6BB00F6DFB7 /* InfoViewController.swift in Sources */,
 				EA9469202B0E90CA00F6DFB7 /* ProfileViewController.swift in Sources */,
 				EA94691E2B0E906C00F6DFB7 /* FeedViewController.swift in Sources */,
+				EAA4543F2B2637B400636F07 /* LogInViewController.swift in Sources */,
 				EA94690C2B0E146D00F6DFB7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
