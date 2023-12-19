@@ -15,7 +15,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         view.addGestureRecognizer(tapGuester)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name:
+            UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -26,7 +27,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     private func logInViewControllerSetup() {
         view.backgroundColor = .white
         title = "Log In"
-                tabBarController?.tabBar.isHidden = true
+//                tabBarController?.tabBar.isHidden = true
     }
     
     // MARK: - StackView
