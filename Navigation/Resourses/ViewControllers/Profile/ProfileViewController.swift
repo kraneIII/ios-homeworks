@@ -2,8 +2,11 @@ import UIKit
 
 
 class ProfileViewController: UIViewController {
+    
+    
         
     fileprivate let post = UserPost.userPost()
+    fileprivate let userPhotos = UserPhotos.userPhotos()
     
     //MARK: - TableView Init
     
@@ -19,6 +22,7 @@ class ProfileViewController: UIViewController {
     private enum CellReuseID: String {
         case post = "PostTableViewCell_ReuseID"
         case header = "HeaderTableViewCell_ReuseID"
+        case photos = "PhotosTableViewCell_ReuseID"
     }
     
     override func viewDidLoad() {
@@ -56,6 +60,7 @@ class ProfileViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             
+            
         ])
     }
     
@@ -67,6 +72,7 @@ class ProfileViewController: UIViewController {
                 
         tableView.register(PostCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
         tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: CellReuseID.header.rawValue)
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: CellReuseID.photos.rawValue)
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -75,46 +81,82 @@ class ProfileViewController: UIViewController {
 }
     //MARK: - Extensions
      
-     extension ProfileViewController: UITableViewDataSource {
-         
-         //MARK: - CustomHeader
-         
-         func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-             if section == 0{
-                 guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellReuseID.header.rawValue) as? ProfileHeaderView else{fatalError("header failed")}
-                 
-                 return headerView
-             }
-             return nil
-         }
-         
-         
-         func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-             return 210
-         }
-         
-         
-         //MARK: - CustomCell
-         
-         func numberOfSections(in tableView: UITableView) -> Int {
-             1
-             
-         }
-         
-         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-             post.count
-         }
-         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-             guard let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.post.rawValue , for: indexPath) as? PostCell
-             else{return UITableViewCell()}
-             
-             cell.configure(userPostInfo: post[indexPath.row])
-             
-             return cell
-         }
-     }
-
+extension ProfileViewController: UITableViewDataSource {
+    
+    //MARK: - CustomHeader
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0{
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellReuseID.header.rawValue) as? ProfileHeaderView else{fatalError("header failed")}
+            
+            return headerView
+        }
+        return nil
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 210
+    }
+    
+    
+    //
+    //MARK: - CustomCell
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+        
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0{
+            return  1
+        }
+        else if section == 1{
+            return post.count
+        }
+        
+        return 0
+        
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 {
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.photos.rawValue, for: indexPath) as? PhotosTableViewCell
+                    
+            else{
+                return UITableViewCell()
+                
+            }
+            cell.imagePhotosSetup(userPhoto: userPhotos[indexPath.row])
+            return cell
+        }
+        
+        if indexPath.section == 1 {
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.post.rawValue , for: indexPath) as? PostCell
+            else{return UITableViewCell()}
+            
+            
+            cell.configure(userPostInfo: post[indexPath.row])
+            
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "defaultId", for: indexPath)
+        return cell
+    }
+}
      extension ProfileViewController: UITableViewDelegate{
+         
+         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+             if indexPath.section == 0 {
+                 let photoController = PhotosViewController()
+                 navigationController?.pushViewController(photoController, animated: true)
+             }
+         }
      }
 
 
