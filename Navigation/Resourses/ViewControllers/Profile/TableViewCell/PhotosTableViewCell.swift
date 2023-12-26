@@ -64,7 +64,6 @@ class PhotosTableViewCell: UITableViewCell {
         super .init(style: .default, reuseIdentifier: reuseIdentifier)
         addSubView()
         tableViewPhotoCellLayout()
-        
     }
     
     required init?(coder: NSCoder) {
