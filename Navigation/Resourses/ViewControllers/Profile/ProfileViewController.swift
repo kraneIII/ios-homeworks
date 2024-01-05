@@ -12,7 +12,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView.init(
-            frame: .zero , style: .plain    
+            frame: .zero , style: .grouped
         )
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -54,6 +54,7 @@ class ProfileViewController: UIViewController {
         let safeArea = view.safeAreaLayoutGuide
                 
         view.addSubview(tableView)
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
@@ -67,7 +68,7 @@ class ProfileViewController: UIViewController {
     // MARK: - TuneTableView
     
     private func tuneTableView() {
-
+                
         tableView.tableFooterView = UIView()
                 
         tableView.register(PostCell.self, forCellReuseIdentifier: CellReuseID.post.rawValue)
@@ -86,7 +87,7 @@ extension ProfileViewController: UITableViewDataSource {
     //MARK: - CustomHeader
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0{
+        if section == 0 {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellReuseID.header.rawValue) as? ProfileHeaderView else{fatalError("header failed")}
             
             return headerView
@@ -96,23 +97,22 @@ extension ProfileViewController: UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 210
+        return 220
     }
     
-    
-    //
     //MARK: - CustomCell
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        return 2
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0{
+        if section == 0 {
             return  1
         }
-        else if section == 1{
+        
+        else if section == 1 {
             return post.count
         }
         
@@ -120,17 +120,17 @@ extension ProfileViewController: UITableViewDataSource {
         
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.photos.rawValue, for: indexPath) as? PhotosTableViewCell
                     
-            else{
+            else {
                 return UITableViewCell()
                 
             }
+            
             cell.imagePhotosSetup(userPhoto: userPhotos[indexPath.row])
             return cell
         }

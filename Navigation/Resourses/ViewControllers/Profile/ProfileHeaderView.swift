@@ -2,7 +2,7 @@
 import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
-        
+    
     // MARK: - UILabel
     
     let fullNameLabel: UILabel = {
@@ -14,10 +14,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-        
+    
     // MARK: - TextFielf
-
-
+    
+    
     let labelStatus: UILabel = {
         let status = UILabel()
         status.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +25,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         status.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         status.layer.opacity = 0.5
         status.layer.opacity = 0.5
-
-
+        
+        
         return status
     }()
     
@@ -39,17 +39,66 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         personalInfo.placeholder = "Wrire something..."
         personalInfo.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         personalInfo.backgroundColor = .white
-//        personalInfo.isEnabled = true
-//        personalInfo.keyboardType = .default
-//        personalInfo.layer.opacity = 0.5
+        //        personalInfo.isEnabled = true
+        //        personalInfo.keyboardType = .default
+        //        personalInfo.layer.opacity = 0.5
         personalInfo.layer.cornerRadius = 12
         personalInfo.layer.borderWidth = 1
         personalInfo.layer.borderColor = UIColor.black.cgColor
         
         return personalInfo
     }()
+    
+    // MARK: - ANIMATION
+    
+    private func animation() {
+                        
+        let centerOrigin = contentView.center
         
-    // MARK: - Avatar
+        let animator = UIViewPropertyAnimator(
+            duration: 0.5,
+            curve: .easeOut
+        ) {
+            
+            self.avatar.center = CGPoint(x: centerOrigin.x, y: 1.5 * centerOrigin.y)
+            self.avatar.transform = CGAffineTransform.init(scaleX: 2, y: 2)
+            self.avatar.layer.cornerRadius = 0
+            
+            self.hideView.layer.opacity = 1
+            self.hideView.transform = CGAffineTransform.init(scaleX: 1, y: 10)
+            
+        }
+        animator.startAnimation(afterDelay: 1.0)
+        
+        
+        let secondAnimator = UIViewPropertyAnimator(
+            duration: 0.3,
+            curve: .linear
+        ) {
+            self.animationCancelButton.layer.opacity = 1
+        }
+        secondAnimator.startAnimation(afterDelay: 1.5)
+    }
+    
+    private func cancelAnimation() {
+                
+        let cancelAnimator = UIViewPropertyAnimator(
+            duration: 0.5,
+            curve: .easeIn
+        ) {
+//            self.avatar.frame = self.avatar.frame.offsetBy(dx: -116, dy: -96)
+            self.avatar.center = CGPoint(x: 0.4 * self.avatar.center.x, y: 0.5 * self.avatar.center.y)
+            self.avatar.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
+//            self.avatar.layer.cornerRadius = 64
+            self.avatar.layer.cornerRadius = self.avatar.frame.size.width / 2
+            self.animationCancelButton.layer.opacity = 0
+            
+            self.hideView.layer.opacity = 0
+        }
+        cancelAnimator.startAnimation(afterDelay: 1)
+        
+    }
+    
     
     private lazy var avatar: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "avatar"))
@@ -57,11 +106,36 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         imageView.layer.cornerRadius = 64
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = true
         
+        let imageTapped = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        
+        imageView.addGestureRecognizer(imageTapped)
         
         return imageView
     }()
-
+    
+    private lazy var animationCancelButton: UIButton = {
+        let animationCancelButton = UIButton()
+        animationCancelButton.setImage(UIImage(systemName: "arrowshape.forward.fill"), for: .normal)
+        animationCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        animationCancelButton.layer.opacity = 0
+        
+        animationCancelButton.addTarget(self, action: #selector(animationCancel), for: .touchUpInside)
+        
+        return animationCancelButton
+    }()
+    
+    private lazy var hideView: UIView = {
+        let hideView = UIView()
+        hideView.layer.opacity = 0
+        hideView.backgroundColor = .white
+//        hideView.layer.masksToBounds = true
+        hideView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return hideView
+    }()
+    
     
     // MARK: - Button
     
@@ -82,38 +156,31 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }()
     
     // MARK: - Init
-
+    
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         translatesAutoresizingMaskIntoConstraints = false
         addSubViews()
-                buttonLayout()
-                textFieldLayout()
-                fullNameLabelLayout()
-                avatarLayout()
-                statusButtonTapped()
-                labelStatusLayot()
+        buttonLayout()
+        textFieldLayout()
+        fullNameLabelLayout()
+        avatarLayout()
+        statusButtonTapped()
+        labelStatusLayot()
+        isUserInteractionEnabled = true
 
+        
     }
     
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        addSubViews()
-//        buttonLayout()
-//        textFieldLayout()
-//        fullNameLabelLayout()
-//        avatarLayout()
-//        statusButtonTapped()
-//        labelStatusLayot()
-//    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - StutusLabelLayout
-
+    
     func labelStatusLayot() {
         addSubview(labelStatus)
         NSLayoutConstraint.activate([
@@ -132,7 +199,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             
         ])
     }
-
+    
     // MARK: - ButtonLayout
     
     func buttonLayout() {
@@ -161,18 +228,28 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         ])
         
     }
-
+    
     
     // MARK: - AvatarLayut
     
     func avatarLayout() {
+        addSubview(hideView)
         addSubview(avatar)
+        addSubview(animationCancelButton)
         NSLayoutConstraint.activate([
+            
             avatar.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
             avatar.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             avatar.widthAnchor.constraint(equalToConstant: 128),
-            avatar.heightAnchor.constraint(equalToConstant: 128)
+            avatar.heightAnchor.constraint(equalToConstant: 128),
             
+            animationCancelButton.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            animationCancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            hideView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            hideView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            hideView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            hideView.leadingAnchor.constraint(equalTo: leadingAnchor),
         ])
         
     }
@@ -180,12 +257,24 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - AddSubViews
     
     func addSubViews() {
-        addSubview(avatar)
+        addSubview(hideView)
         addSubview(statusButton)
         addSubview(textField)
         addSubview(fullNameLabel)
         addSubview(labelStatus)
+        addSubview(animationCancelButton)
+        addSubview(avatar)
+    }
+    
+    //MARK: - OBJC FUNC
+    
+    @objc func profileImageTapped() {
+        animation()
         
+    }
+    
+    @objc func animationCancel() {
+        cancelAnimation()
         
     }
     

@@ -12,7 +12,8 @@ class PhotosTableViewCell: UITableViewCell {
         
         return photosLabel
     }()
-        
+    
+    
     private lazy var backImage: UIImageView = {
         let backImage = UIImageView()
         backImage.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +65,8 @@ class PhotosTableViewCell: UITableViewCell {
         super .init(style: .default, reuseIdentifier: reuseIdentifier)
         addSubView()
         tableViewPhotoCellLayout()
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -86,7 +89,7 @@ class PhotosTableViewCell: UITableViewCell {
     private func tableViewPhotoCellLayout() {
         addSubView()
         NSLayoutConstraint.activate([
-                                
+                                            
             photosLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             photosLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             

@@ -14,7 +14,8 @@ class PostCell: UITableViewCell {
         return topLabel
     }()
     
-    private lazy var imagePost: UIImageView = {
+    
+    private lazy var imagePost: UIImageView = { [unowned self] in
         var imagePost = UIImageView()
         imagePost.translatesAutoresizingMaskIntoConstraints = false
         imagePost.contentMode = .scaleAspectFit
@@ -22,6 +23,8 @@ class PostCell: UITableViewCell {
         
         return imagePost
     }()
+    
+    
     
     private lazy var postInfo: UILabel = {
         let postInfo = UILabel()
@@ -87,8 +90,8 @@ class PostCell: UITableViewCell {
             imagePost.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 8),
             imagePost.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             imagePost.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-//            imagePost.widthAnchor.constraint(equalTo: widthAnchor),
-//            imagePost.heightAnchor.constraint(equalTo: heightAnchor),
+            //            imagePost.widthAnchor.constraint(equalTo: widthAnchor),
+            //            imagePost.heightAnchor.constraint(equalTo: heightAnchor),
             
             postInfo.topAnchor.constraint(equalTo: imagePost.bottomAnchor, constant: 16),
             postInfo.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
@@ -101,16 +104,17 @@ class PostCell: UITableViewCell {
             viewsLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
             viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
+            
         ])
         
     }
     
-     func configure(userPostInfo: UserPost) {
+    func configure(userPostInfo: UserPost) {
         imagePost.image = userPostInfo.image
         postInfo.text = userPostInfo.description
         likesLabel.text = userPostInfo.likes
         viewsLabel.text = userPostInfo.views
-         topLabel.text = userPostInfo.author
+        topLabel.text = userPostInfo.author
     }
+    
 }
-
