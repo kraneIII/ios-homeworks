@@ -27,10 +27,23 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //        setupViewController()
+        //        addSubViews()
+        //        tableViewLayout()
+        //        tuneTableView()
+        
+#if DEBUG
+        view.backgroundColor = .systemGray6
+        
+#else
+        view.backgroundColor = .white
+        
+#endif
         setupViewController()
         addSubViews()
         tableViewLayout()
         tuneTableView()
+        
         
     }
     
@@ -38,7 +51,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Setup
     
     private func setupViewController () {
-        view.backgroundColor = .systemGray6
+//        view.backgroundColor = .systemGray6
         navigationItem.title = "ProfileUsingTableView"
         title = "Profile"
     }
