@@ -1,4 +1,6 @@
 import UIKit
+import iOSIntPackage
+
 
 class PostCell: UITableViewCell {
     
@@ -90,9 +92,7 @@ class PostCell: UITableViewCell {
             imagePost.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 8),
             imagePost.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             imagePost.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            //            imagePost.widthAnchor.constraint(equalTo: widthAnchor),
-            //            imagePost.heightAnchor.constraint(equalTo: heightAnchor),
-            
+
             postInfo.topAnchor.constraint(equalTo: imagePost.bottomAnchor, constant: 16),
             postInfo.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             postInfo.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
@@ -108,6 +108,15 @@ class PostCell: UITableViewCell {
         ])
         
     }
+//    
+//    func filter(image: UIImage?) -> Void {
+//        let imageFilter = ImageProcessor()
+//        imageFilter.processImage(sourceImage: imagePost.image!, filter: .fade, completion:foo(image: image!))
+//    }
+//    
+//    func foo(image: UIImage?) -> Void{
+//       let image = imagePost.image!
+//    }
     
     func configure(userPostInfo: UserPost) {
         imagePost.image = userPostInfo.image

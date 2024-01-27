@@ -153,7 +153,6 @@ extension ProfileViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseID.post.rawValue , for: indexPath) as? PostCell
             else{return UITableViewCell()}
             
-            
             cell.configure(userPostInfo: post[indexPath.row])
             
             return cell
@@ -162,15 +161,15 @@ extension ProfileViewController: UITableViewDataSource {
         return cell
     }
 }
-     extension ProfileViewController: UITableViewDelegate{
-         
-         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-             if indexPath.section == 0 {
-                 let photoController = PhotosViewController()
-                 navigationController?.pushViewController(photoController, animated: true)
-             }
-         }
-     }
+extension ProfileViewController: UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            let photoController = PhotosViewController()
+            navigationController?.pushViewController(photoController, animated: true)
+        }
+    }
+}
 
 
 
