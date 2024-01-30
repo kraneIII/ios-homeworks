@@ -2,9 +2,9 @@ import UIKit
 
 
 class ProfileViewController: UIViewController {
+
+//    let user = User(login: "", fullName: "", avatar: UIImage(named: "")!, status: "")
     
-    
-        
     fileprivate let post = UserPost.userPost()
     fileprivate let userPhotos = UserPhotos.userPhotos()
     
@@ -102,6 +102,7 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellReuseID.header.rawValue) as? ProfileHeaderView else{fatalError("header failed")}
+            headerView.userConfig(user: UserModel().user!)
             
             return headerView
         }

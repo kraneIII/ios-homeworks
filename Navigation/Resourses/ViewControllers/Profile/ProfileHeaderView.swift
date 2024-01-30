@@ -113,57 +113,53 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubViews()
         statusButtonTapped()
-//        buttonLayout()
-//        textFieldLayout()
-//        fullNameLabelLayout()
-//        avatarLayout()
-//        labelStatusLayot()
+        Layout()
         isUserInteractionEnabled = true
-        
-        fullNameLabel.snp.makeConstraints{ maker in
-            maker.left.equalToSuperview().inset(160)
-            maker.top.equalToSuperview().inset(31)
-            
-            labelStatus.snp.makeConstraints{ maker in
-                maker.left.equalToSuperview().inset(160)
-                maker.bottom.equalToSuperview().inset(0)
-                
-                avatar.snp.makeConstraints{ maker in
-                    maker.left.equalToSuperview().inset(16)
-                    maker.top.equalToSuperview().inset(20)
-                    maker.width.equalTo(128)
-                    maker.height.equalTo(128)
-                }
-                
-                animationCancelButton.snp.makeConstraints{ maker in
-                    maker.top.equalToSuperview().inset(20)
-                    maker.trailing.equalToSuperview().inset(-16)
-                }
-                
-                statusButton.snp.makeConstraints { maker in
-                    maker.width.equalTo(360)
-                    maker.height.equalTo(50)
-                    maker.centerX.equalToSuperview()
-                    maker.top.equalToSuperview().inset(164)
-                    maker.left.equalToSuperview().inset(16)
-                }
-                
-                
-                hideView.snp.makeConstraints{ maker in
-                    maker.top.equalToSuperview().inset(20)
-                    maker.bottom.equalToSuperview().inset(-16)
-                    maker.trailing.equalToSuperview()
-                    maker.leading.equalToSuperview()
-                }
-                
-                textField.snp.makeConstraints{ maker in
-                    maker.bottom.equalTo(statusButton).inset(60)
-                    maker.left.equalToSuperview().inset(160)
-                    maker.height.equalTo(40)
-                    maker.width.equalTo(215)
-                }
-            }
-        }
+        //
+        //        fullNameLabel.snp.makeConstraints{ maker in
+        //            maker.left.equalToSuperview().inset(160)
+        //            maker.top.equalToSuperview().inset(31)
+        //
+        //            labelStatus.snp.makeConstraints{ maker in
+        //                maker.left.equalToSuperview().inset(160)
+        //                maker.bottom.equalToSuperview().inset(0)
+        //
+        //                avatar.snp.makeConstraints{ maker in
+        //                    maker.left.equalToSuperview().inset(16)
+        //                    maker.top.equalToSuperview().inset(20)
+        //                    maker.width.equalTo(128)
+        //                    maker.height.equalTo(128)
+        //                }
+        //
+        //                animationCancelButton.snp.makeConstraints{ maker in
+        //                    maker.top.equalToSuperview().inset(20)
+        //                    maker.trailing.equalToSuperview().inset(-16)
+        //                }
+        //
+        //                statusButton.snp.makeConstraints { maker in
+        //                    maker.width.equalTo(360)
+        //                    maker.height.equalTo(50)
+        //                    maker.centerX.equalToSuperview()
+        //                    maker.top.equalToSuperview().inset(164)
+        //                    maker.left.equalToSuperview().inset(16)
+        //                }
+        //
+        //
+        //                hideView.snp.makeConstraints{ maker in
+        //                    maker.top.equalToSuperview().inset(20)
+        //                    maker.bottom.equalToSuperview().inset(-16)
+        //                    maker.trailing.equalToSuperview()
+        //                    maker.leading.equalToSuperview()
+        //                }
+        //
+        //                textField.snp.makeConstraints{ maker in
+        //                    maker.bottom.equalTo(statusButton).inset(60)
+        //                    maker.left.equalToSuperview().inset(160)
+        //                    maker.height.equalTo(40)
+        //                    maker.width.equalTo(215)
+        //                }
+        //            }
+        //        }
     }
     
     
@@ -172,85 +168,52 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - StutusLabelLayout
     
-//    func labelStatusLayot() {
-//        addSubview(labelStatus)
-//        NSLayoutConstraint.activate([
-//            labelStatus.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16),
-//            labelStatus.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -5)
-//        ])
-//    }
-    
-    // MARK: - fullNameLabelLayout
-    
-//    func fullNameLabelLayout() {
-//        addSubview(fullNameLabel)
-//        NSLayoutConstraint.activate([
-//            fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 31),
-//            fullNameLabel.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16)
-//            
-//        ])
-//    }
-    
-    // MARK: - ButtonLayout
-    
-//    func buttonLayout() {
-//        addSubview(statusButton)
-//        NSLayoutConstraint.activate([
-//            statusButton.widthAnchor.constraint(equalToConstant: 300),
-//            statusButton.heightAnchor.constraint(equalToConstant: 50),
-//            statusButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            statusButton.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: 16),
-//            statusButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 16)
-//        ])
-//    }
-//    
-    // MARK: - textFieldLayout
-    
-//    
-//    func textFieldLayout() {
-//        addSubview(textField)
-//        NSLayoutConstraint.activate([
-//            self.heightAnchor.constraint(equalToConstant: 240),
-//            self.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-//            textField.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16),
-//            textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -10),
-//            textField.heightAnchor.constraint(equalToConstant: 40),
-//            textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -16)
-//        ])
-//        
-//    }
+    //    MARK: - Layout
     
     
-    // MARK: - AvatarLayut
-    
-//    func avatarLayout() {
-//        addSubview(hideView)
-//        addSubview(avatar)
-//        addSubview(animationCancelButton)
-//        NSLayoutConstraint.activate([
-//            
-//            avatar.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
-//            avatar.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-//            avatar.widthAnchor.constraint(equalToConstant: 128),
-//            avatar.heightAnchor.constraint(equalToConstant: 128),
-//            
-//            animationCancelButton.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-//            animationCancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-//            
-//            hideView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-//            hideView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-//            hideView.trailingAnchor.constraint(equalTo: trailingAnchor),
-//            hideView.leadingAnchor.constraint(equalTo: leadingAnchor),
-//        ])
-//        
-//    }
+    func Layout() {
+        addSubViews()
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 240),
+            self.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            textField.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16),
+            textField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -10),
+            textField.heightAnchor.constraint(equalToConstant: 40),
+            textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -16),
+            
+            avatar.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            avatar.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            avatar.widthAnchor.constraint(equalToConstant: 128),
+            avatar.heightAnchor.constraint(equalToConstant: 128),
+            
+            animationCancelButton.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            animationCancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            hideView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            hideView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+            hideView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            hideView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            
+            statusButton.widthAnchor.constraint(equalToConstant: 300),
+            statusButton.heightAnchor.constraint(equalToConstant: 50),
+            statusButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            statusButton.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: 16),
+            statusButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            
+            fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 31),
+            fullNameLabel.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16),
+            
+            labelStatus.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 16),
+            labelStatus.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -5),
+        ])
+        
+    }
     
     // MARK: - ANIMATION
     
     private func animation() {
-                        
+        
         let centerOrigin = contentView.center
         
         let animator = UIViewPropertyAnimator(
@@ -279,15 +242,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     private func cancelAnimation() {
-                
+        
         let cancelAnimator = UIViewPropertyAnimator(
             duration: 0.5,
             curve: .easeIn
         ) {
-//            self.avatar.frame = self.avatar.frame.offsetBy(dx: -116, dy: -96)
+            //            self.avatar.frame = self.avatar.frame.offsetBy(dx: -116, dy: -96)
             self.avatar.center = CGPoint(x: 0.4 * self.avatar.center.x, y: 0.5 * self.avatar.center.y)
             self.avatar.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
-//            self.avatar.layer.cornerRadius = 64
+            //            self.avatar.layer.cornerRadius = 64
             self.avatar.layer.cornerRadius = self.avatar.frame.size.width / 2
             self.animationCancelButton.layer.opacity = 0
             
@@ -296,7 +259,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         cancelAnimator.startAnimation(afterDelay: 1)
         
     }
-
+    
     
     // MARK: - AddSubViews
     
@@ -309,6 +272,13 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         addSubview(animationCancelButton)
         addSubview(avatar)
     }
+    
+    func userConfig(user: User){
+        fullNameLabel.text = user.fullName
+        labelStatus.text = user.status
+        avatar.image = user.avatar
+    }
+    
     
     //MARK: - OBJC FUNC
     

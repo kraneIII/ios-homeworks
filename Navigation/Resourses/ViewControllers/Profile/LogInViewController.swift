@@ -160,11 +160,25 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         ])
     }
     
-   
+    private func alert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Данные введены некорректно", preferredStyle: .alert)
+        let alertAct = UIAlertAction(title: "Ок", style: .default)
+        
+        alert.addAction(alertAct)
+        present(alert, animated: true)
+    }
+    
     
     @objc func profileButtonTapped() {
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+        if textField.text == UserModel().user?.login {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+        else {
+            
+            alert()
+            
+        }
     }
     
     // MARK: - MoveViewsWhenKeyboardAppear

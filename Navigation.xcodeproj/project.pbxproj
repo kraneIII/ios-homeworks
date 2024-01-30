@@ -35,6 +35,9 @@
 		EAF34A772B5DBF6B0031DE2F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9469292B0FE60E00F6DFB7 /* Post.swift */; };
 		EAF34A7B2B62DE9A0031DE2F /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = EAF34A7A2B62DE9A0031DE2F /* iOSIntPackage */; };
 		EAF34A7E2B62E39D0031DE2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EAF34A7D2B62E39D0031DE2F /* SnapKit */; };
+		EAF34A832B68D8180031DE2F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A822B68D8180031DE2F /* UserService.swift */; };
+		EAF34A852B6982EB0031DE2F /* SchemeUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A842B6982EB0031DE2F /* SchemeUser.swift */; };
+		EAF34A872B698E840031DE2F /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A862B698E840031DE2F /* UserModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +106,9 @@
 		EAF34A5A2B5DBF0C0031DE2F /* StorageService.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = StorageService.docc; sourceTree = "<group>"; };
 		EAF34A602B5DBF0C0031DE2F /* StorageServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StorageServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF34A672B5DBF0C0031DE2F /* StorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageServiceTests.swift; sourceTree = "<group>"; };
+		EAF34A822B68D8180031DE2F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		EAF34A842B6982EB0031DE2F /* SchemeUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeUser.swift; sourceTree = "<group>"; };
+		EAF34A862B698E840031DE2F /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +201,9 @@
 				EAA454482B2B72EF00636F07 /* UserPost.swift */,
 				EAA454552B38BCEB00636F07 /* UserPhotos.swift */,
 				EAA454592B3A106D00636F07 /* CollectionImage.swift */,
+				EAF34A842B6982EB0031DE2F /* SchemeUser.swift */,
+				EAF34A862B698E840031DE2F /* UserModel.swift */,
+				EAF34A882B698EBD0031DE2F /* Services */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -253,6 +262,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EAF34A882B698EBD0031DE2F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EAF34A822B68D8180031DE2F /* UserService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,12 +433,15 @@
 				EAA454562B38BCEB00636F07 /* UserPhotos.swift in Sources */,
 				EA9469202B0E90CA00F6DFB7 /* ProfileViewController.swift in Sources */,
 				EAA454502B348F6D00636F07 /* PhotosTableViewCell.swift in Sources */,
+				EAF34A852B6982EB0031DE2F /* SchemeUser.swift in Sources */,
 				EAA454542B3772C400636F07 /* PhotosViewController.swift in Sources */,
 				EA94691E2B0E906C00F6DFB7 /* FeedViewController.swift in Sources */,
 				EAA454472B2B5AA300636F07 /* PostTableViewCell.swift in Sources */,
 				EAA4544E2B2CE54200636F07 /* Extencions to UITableView.swift in Sources */,
+				EAF34A832B68D8180031DE2F /* UserService.swift in Sources */,
 				EAA454582B3A070C00636F07 /* PhotosCollectionViewCell.swift in Sources */,
 				EAA4543F2B2637B400636F07 /* LogInViewController.swift in Sources */,
+				EAF34A872B698E840031DE2F /* UserModel.swift in Sources */,
 				EA94690C2B0E146D00F6DFB7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
