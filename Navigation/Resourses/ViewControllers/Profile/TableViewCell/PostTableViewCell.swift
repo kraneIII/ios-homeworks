@@ -92,7 +92,7 @@ class PostCell: UITableViewCell {
             imagePost.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 8),
             imagePost.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             imagePost.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-
+            
             postInfo.topAnchor.constraint(equalTo: imagePost.bottomAnchor, constant: 16),
             postInfo.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
             postInfo.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
@@ -108,22 +108,17 @@ class PostCell: UITableViewCell {
         ])
         
     }
-//    
-//    func filter(image: UIImage?) -> Void {
-//        let imageFilter = ImageProcessor()
-//        imageFilter.processImage(sourceImage: imagePost.image!, filter: .fade, completion:foo(image: image!))
-//    }
-//    
-//    func foo(image: UIImage?) -> Void{
-//       let image = imagePost.image!
-//    }
-    
+
     func configure(userPostInfo: UserPost) {
-        imagePost.image = userPostInfo.image
         postInfo.text = userPostInfo.description
         likesLabel.text = userPostInfo.likes
         viewsLabel.text = userPostInfo.views
         topLabel.text = userPostInfo.author
+        
+        let imageFilter = ImageProcessor()
+        imageFilter.processImage(sourceImage: userPostInfo.image, filter: .chrome, completion: { image in
+            imagePost.image = userPostInfo.image
+        })
+        
     }
-    
 }
