@@ -2,33 +2,6 @@ import UIKit
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        logInViewControllerSetup()
-        addSubViews()
-        logoImageLayout()
-        stackViewLayout()
-        authorisatedButtonLayout()
-        
-        let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        view.addGestureRecognizer(tapGuester)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
-    // MARK: - SetupViewcontroller
-    
-    private func logInViewControllerSetup() {
-        view.backgroundColor = .white
-        title = "Log In"
-                tabBarController?.tabBar.isHidden = true
-    }
-    
     // MARK: - StackView
     
     private lazy var stackView: UIStackView = { [unowned self] in
@@ -36,9 +9,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.clipsToBounds = true
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 0.5
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
+        
         
         
         stackView.addArrangedSubview(textField)
@@ -102,16 +76,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return passwordTextField
     }()
     
-    
-    // MARK: - HideKeyboardUsingButton
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        secondTextField.resignFirstResponder()
-        textField.resignFirstResponder()
-
-        return true
-    }
-    
     // MARK: - Button
     
     
@@ -135,59 +99,86 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    // MARK: - LogoImageLayout
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        logInViewControllerSetup()
+        addSubViews()
+        Layout()
+
+        
+        let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGuester)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
     
-    private func logoImageLayout() {
+    // MARK: - HideKeyboardUsingButton
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        secondTextField.resignFirstResponder()
+        textField.resignFirstResponder()
+
+        return true
+    }
+    
+
+    //MARK: - Private
+        
+    private func addSubViews() {
+        view.addSubview(button)
         view.addSubview(logoView)
+        view.addSubview(stackView)
+    }
+    
+    private func logInViewControllerSetup() {
+        view.backgroundColor = .white
+        title = "Log In"
+//                tabBarController?.tabBar.isHidden = true
+    }
+       
+    private func Layout() {
+        addSubViews()
         NSLayoutConstraint.activate([
             logoView.widthAnchor.constraint(equalToConstant: 100),
             logoView.heightAnchor.constraint(equalToConstant: 100),
             logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120)
-        ])
-    }
-    
-    
-    // MARK: - StackViewLayout
-    
-    private func stackViewLayout() {
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
+            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            
             stackView.heightAnchor.constraint(equalToConstant: 100),
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120)
-        ])
-    }
-    
-    // MARK: - ButtonViewLayout
-    
-    private func authorisatedButtonLayout() {
-        view.addSubview(button)
-        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
+            
             button.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
             button.heightAnchor.constraint(equalToConstant: 50),
             button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             
-            
         ])
     }
     
-    
-    // MARK: - AddingSubviews
-    
-    private func addSubViews() {
-        view.addSubview(textField)
-        view.addSubview(secondTextField)
-        view.addSubview(button)
-        view.addSubview(logoView)
-        view.addSubview(stackView)
+    private func alert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Данные введены некорректно", preferredStyle: .alert)
+        let alertAct = UIAlertAction(title: "Ок", style: .default)
+        
+        alert.addAction(alertAct)
+        present(alert, animated: true)
     }
     
+    
     @objc func profileButtonTapped() {
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+        if textField.text == UserModel().user?.login {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+        else {
+            
+            alert()
+            
+        }
     }
     
     // MARK: - MoveViewsWhenKeyboardAppear
