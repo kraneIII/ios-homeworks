@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let feedViewController = FeedViewController()
         
         let logInViewController = LogInViewController()
+        logInViewController.loginDelegate = MyLoginFactory().makeLoginInsprector()
         
 //        let profileViewController = ProfileViewController()
         

@@ -1,6 +1,21 @@
 import UIKit
+import Foundation
+
+protocol LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool
+}
+
+struct LoginInspector: LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool {
+        return Checker.shared.check(loginn: login, passwordd: password)
+    }
+    
+}
+
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    var loginDelegate: LoginViewControllerDelegate?
     
     // MARK: - StackView
     
@@ -15,8 +30,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
         
         
-        stackView.addArrangedSubview(textField)
-        stackView.addArrangedSubview(secondTextField)
+        stackView.addArrangedSubview(emailField)
+        stackView.addArrangedSubview(passwordField)
         return stackView
     }()
     
@@ -30,7 +45,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - TextField
     
-    private lazy var textField: UITextField = {
+    private lazy var emailField: UITextField = {
         
         let textField = UITextField()
         textField.placeholder = "   Email or phone"
@@ -52,7 +67,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return textField
     }()
     
-    private lazy var secondTextField: UITextField = {
+    private lazy var passwordField: UITextField = {
         
         let passwordTextField = UITextField()
         passwordTextField.placeholder = "   Password"
@@ -118,8 +133,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     // MARK: - HideKeyboardUsingButton
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        secondTextField.resignFirstResponder()
-        textField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+        emailField.resignFirstResponder()
 
         return true
     }
@@ -161,23 +176,31 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func alert() {
-        let alert = UIAlertController(title: "Ошибка", message: "Данные введены некорректно", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Ошибка", message: "Логин или пароль введены неверно", preferredStyle: .alert)
         let alertAct = UIAlertAction(title: "Ок", style: .default)
         
         alert.addAction(alertAct)
         present(alert, animated: true)
     }
     
+    private func checker() -> Bool {
+        LoginInspector().check(login: emailField.text ?? "", password: passwordField.text ?? "")
+    }
+    
+     func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        return true
+    }
     
     @objc func profileButtonTapped() {
-        if textField.text == UserModel().user?.login {
+        if checker() == true {
             let profileViewController = ProfileViewController()
             self.navigationController?.pushViewController(profileViewController, animated: true)
         }
         else {
             
             alert()
-            
+            emailField.text = ""
+            passwordField.text = ""
         }
     }
     
@@ -195,8 +218,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     // MARK: - HideKeyboardUsingTapGestureRecognizer
     
     @objc func hideKeyboard() {
-        textField.resignFirstResponder()
-        secondTextField.resignFirstResponder()
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
     }
 
     
