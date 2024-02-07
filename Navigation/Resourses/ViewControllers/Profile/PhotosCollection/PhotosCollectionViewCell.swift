@@ -4,6 +4,8 @@ import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
     
+    let image = UIImageView()
+    
     private lazy var postCellImage: UIImageView = {
         let postCellImage = UIImageView()
         postCellImage.translatesAutoresizingMaskIntoConstraints = false
@@ -14,7 +16,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        
+                
         cellImageLayout()
         addSubView()    
     }
@@ -25,6 +27,7 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     private func addSubView() {
         contentView.addSubview(postCellImage)
+        addSubview(image)
     }
     
     //MARK: - Private

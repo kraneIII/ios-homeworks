@@ -1,6 +1,5 @@
 import UIKit
 
-
 class ProfileViewController: UIViewController {
 
 //    let user = User(login: "", fullName: "", avatar: UIImage(named: "")!, status: "")

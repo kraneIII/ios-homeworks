@@ -1,8 +1,11 @@
 import Foundation
 import UIKit
+import iOSIntPackage
 
-class PhotosViewController: UIViewController {
+class PhotosViewController: UIViewController, ImageLibrarySubscriber {
     
+    let imagePublisherFacade = ImagePublisherFacade()
+        
     let photosStorage = CollectionImage.collectionImage()
     
     private lazy var collectionView: UICollectionView = {
@@ -19,21 +22,28 @@ class PhotosViewController: UIViewController {
         
         return collectionView
     }()
-    
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
         collectionViewLayout()
         TuneCollectionView()
         
-        func viewWillAppear(_ animated: Bool) {
-            navigationController?.navigationBar.isHidden = false
-        }
-        
+        subscribe()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+
+    private func subscribe() {
+        imagePublisherFacade.subscribe(self)
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10)
+        collectionView.reloadData()
+    }
+    
     private func setupViewController () {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "RemoveSub", style: .plain, target: self, action: #selector(deleteSub))
         view.backgroundColor = .white
         view.addSubview(collectionView)
         title = "Photo Gallery"
@@ -63,6 +73,10 @@ class PhotosViewController: UIViewController {
         collectionView.delegate = self
     }
     
+    @objc func deleteSub() {
+        imagePublisherFacade.removeSubscription(for: self)
+    }
+
 }
     
 extension PhotosViewController: UICollectionViewDataSource {
@@ -75,6 +89,8 @@ extension PhotosViewController: UICollectionViewDataSource {
        
         let photo = photosStorage[indexPath.row]
         cell.congigure(with: photo)
+//        cell.image.image = UIImage(named: "Win")
+
         return cell
     }
     
@@ -82,4 +98,12 @@ extension PhotosViewController: UICollectionViewDataSource {
 
 extension PhotosViewController: UICollectionViewDelegate {
     
+}
+
+extension PhotosViewController {
+    func receive(images: [UIImage]) {
+        let photo = CollectionImage.collectionImage()
+        collectionView.reloadData()
+
+    }
 }
