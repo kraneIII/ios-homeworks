@@ -2,12 +2,12 @@ import Foundation
 import UIKit
 import iOSIntPackage
 
-class PhotosViewController: UIViewController, ImageLibrarySubscriber {
+class PhotosViewController: UIViewController {
     
     let imagePublisherFacade = ImagePublisherFacade()
         
     let photosStorage = CollectionImage.collectionImage()
-    
+                
     private lazy var collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
@@ -38,7 +38,7 @@ class PhotosViewController: UIViewController, ImageLibrarySubscriber {
 
     private func subscribe() {
         imagePublisherFacade.subscribe(self)
-        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10)
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
         collectionView.reloadData()
     }
     
@@ -87,9 +87,10 @@ extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID.photos.rawValue, for: indexPath) as! PhotosCollectionViewCell
        
-        let photo = photosStorage[indexPath.row]
-        cell.congigure(with: photo)
-//        cell.image.image = UIImage(named: "Win")
+//        let photo = photosStorage[indexPath.row]
+//        cell.congigure(with: photo)
+//        cell.congigure()
+        cell.congigure(with: photoCollection)
 
         return cell
     }
@@ -100,10 +101,10 @@ extension PhotosViewController: UICollectionViewDelegate {
     
 }
 
-extension PhotosViewController {
+extension PhotosViewController: ImageLibrarySubscriber {
     func receive(images: [UIImage]) {
-        let photo = CollectionImage.collectionImage()
+//        var photos = photosStorage
+        photoCollection = images
         collectionView.reloadData()
-
     }
 }

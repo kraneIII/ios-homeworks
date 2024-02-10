@@ -5,6 +5,7 @@ import UIKit
 class PhotosCollectionViewCell: UICollectionViewCell {
     
     let image = UIImageView()
+    let collectionOfPhotosGenerator = PhotosViewController()
     
     private lazy var postCellImage: UIImageView = {
         let postCellImage = UIImageView()
@@ -16,9 +17,10 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-                
+        
         cellImageLayout()
-        addSubView()    
+        addSubView()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -26,8 +28,8 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
     
     private func addSubView() {
-        contentView.addSubview(postCellImage)
         addSubview(image)
+        contentView.addSubview(postCellImage)
     }
     
     //MARK: - Private
@@ -47,8 +49,14 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func congigure(with collectionImage: CollectionImage) {
-        postCellImage.image = collectionImage.collectionImage
+    func foo() {
+        collectionOfPhotosGenerator.receive(images: photoCollection)
+    }
+    
+    func congigure(with collectionImage: [UIImage]) {
+//        collectionOfPhotosGenerator.receive(images: photoCollection)
+        postCellImage.image = photoCollection.randomElement()
+//        postCellImage.image = collectionImage.collectionImage()
         
     }
     

@@ -1,8 +1,8 @@
 import UIKit
 import Foundation
 
-//let imageExample = UIImage(named: "Win")
-//let photoCollection: [UIImage] = [imageExample!, imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!]
+let imageExample = UIImage(named: "Win")
+var photoCollection: [UIImage] = [imageExample!, imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!,imageExample!]
 
 struct CollectionImage {
     
