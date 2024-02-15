@@ -1,12 +1,12 @@
-
 import UIKit
+import StorageService
 
 
 
-class FeedViewController: UIViewController {
+ class FeedViewController: UIViewController {
     
-    let post = Post(title: "")
-    
+     var post = Post(title: "Something")
+     
     // MARK: - StackUIButtons
     
     private lazy var firstStackButton: UIButton = {
@@ -85,7 +85,7 @@ class FeedViewController: UIViewController {
 //
 //    }()
     
-    override func viewDidLoad() {
+  public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(stackView)
         stackViewLayout()

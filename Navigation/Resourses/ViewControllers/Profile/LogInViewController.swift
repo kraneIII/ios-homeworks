@@ -1,33 +1,21 @@
 import UIKit
+import Foundation
+
+protocol LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool
+}
+
+struct LoginInspector: LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool {
+        return Checker.shared.check(loginn: login, passwordd: password)
+    }
+    
+}
+
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
     
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        logInViewControllerSetup()
-        addSubViews()
-        logoImageLayout()
-        stackViewLayout()
-        authorisatedButtonLayout()
-        
-        let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        view.addGestureRecognizer(tapGuester)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
-    // MARK: - SetupViewcontroller
-    
-    private func logInViewControllerSetup() {
-        view.backgroundColor = .white
-        title = "Log In"
-                tabBarController?.tabBar.isHidden = true
-    }
+    var loginDelegate: LoginViewControllerDelegate?
     
     // MARK: - StackView
     
@@ -36,13 +24,14 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.clipsToBounds = true
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 0.5
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
         
         
-        stackView.addArrangedSubview(textField)
-        stackView.addArrangedSubview(secondTextField)
+        
+        stackView.addArrangedSubview(emailField)
+        stackView.addArrangedSubview(passwordField)
         return stackView
     }()
     
@@ -56,7 +45,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - TextField
     
-    private lazy var textField: UITextField = {
+    private lazy var emailField: UITextField = {
         
         let textField = UITextField()
         textField.placeholder = "   Email or phone"
@@ -78,7 +67,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return textField
     }()
     
-    private lazy var secondTextField: UITextField = {
+    private lazy var passwordField: UITextField = {
         
         let passwordTextField = UITextField()
         passwordTextField.placeholder = "   Password"
@@ -101,16 +90,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
         return passwordTextField
     }()
-    
-    
-    // MARK: - HideKeyboardUsingButton
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        secondTextField.resignFirstResponder()
-        textField.resignFirstResponder()
-
-        return true
-    }
     
     // MARK: - Button
     
@@ -135,59 +114,94 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    // MARK: - LogoImageLayout
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        logInViewControllerSetup()
+        addSubViews()
+        Layout()
+
+        
+        let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGuester)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
     
-    private func logoImageLayout() {
+    // MARK: - HideKeyboardUsingButton
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        passwordField.resignFirstResponder()
+        emailField.resignFirstResponder()
+
+        return true
+    }
+    
+
+    //MARK: - Private
+        
+    private func addSubViews() {
+        view.addSubview(button)
         view.addSubview(logoView)
+        view.addSubview(stackView)
+    }
+    
+    private func logInViewControllerSetup() {
+        view.backgroundColor = .white
+        title = "Log In"
+//                tabBarController?.tabBar.isHidden = true
+    }
+       
+    private func Layout() {
+        addSubViews()
         NSLayoutConstraint.activate([
             logoView.widthAnchor.constraint(equalToConstant: 100),
             logoView.heightAnchor.constraint(equalToConstant: 100),
             logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120)
-        ])
-    }
-    
-    
-    // MARK: - StackViewLayout
-    
-    private func stackViewLayout() {
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
+            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            
             stackView.heightAnchor.constraint(equalToConstant: 100),
             stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120)
-        ])
-    }
-    
-    // MARK: - ButtonViewLayout
-    
-    private func authorisatedButtonLayout() {
-        view.addSubview(button)
-        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
+            
             button.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
             button.heightAnchor.constraint(equalToConstant: 50),
             button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             
-            
         ])
     }
     
+    private func alert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Логин или пароль введены неверно", preferredStyle: .alert)
+        let alertAct = UIAlertAction(title: "Ок", style: .default)
+        
+        alert.addAction(alertAct)
+        present(alert, animated: true)
+    }
     
-    // MARK: - AddingSubviews
+    private func checker() -> Bool {
+        LoginInspector().check(login: emailField.text ?? "", password: passwordField.text ?? "")
+    }
     
-    private func addSubViews() {
-        view.addSubview(textField)
-        view.addSubview(secondTextField)
-        view.addSubview(button)
-        view.addSubview(logoView)
-        view.addSubview(stackView)
+     func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        return true
     }
     
     @objc func profileButtonTapped() {
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+        if checker() == true {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+        else {
+            
+            alert()
+            emailField.text = ""
+            passwordField.text = ""
+        }
     }
     
     // MARK: - MoveViewsWhenKeyboardAppear
@@ -204,8 +218,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     // MARK: - HideKeyboardUsingTapGestureRecognizer
     
     @objc func hideKeyboard() {
-        textField.resignFirstResponder()
-        secondTextField.resignFirstResponder()
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
     }
 
     
