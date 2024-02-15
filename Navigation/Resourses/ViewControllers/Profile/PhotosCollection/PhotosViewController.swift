@@ -7,6 +7,7 @@ class PhotosViewController: UIViewController {
     let imagePublisherFacade = ImagePublisherFacade()
         
     let photosStorage = CollectionImage.collectionImage()
+
                 
     private lazy var collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
@@ -89,7 +90,6 @@ extension PhotosViewController: UICollectionViewDataSource {
        
 //        let photo = photosStorage[indexPath.row]
 //        cell.congigure(with: photo)
-//        cell.congigure()
         cell.congigure(with: photoCollection)
 
         return cell
@@ -103,8 +103,8 @@ extension PhotosViewController: UICollectionViewDelegate {
 
 extension PhotosViewController: ImageLibrarySubscriber {
     func receive(images: [UIImage]) {
-//        var photos = photosStorage
         photoCollection = images
+        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
         collectionView.reloadData()
     }
 }

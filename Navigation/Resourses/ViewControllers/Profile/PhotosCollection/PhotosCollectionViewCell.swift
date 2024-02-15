@@ -56,7 +56,6 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     func congigure(with collectionImage: [UIImage]) {
 //        collectionOfPhotosGenerator.receive(images: photoCollection)
         postCellImage.image = photoCollection.randomElement()
-//        postCellImage.image = collectionImage.collectionImage()
         
     }
     
