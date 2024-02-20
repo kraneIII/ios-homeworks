@@ -4,7 +4,7 @@ import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
-    let imagePublisherFacade = ImagePublisherFacade()
+//    let imagePublisherFacade = ImagePublisherFacade()
         
     let photosStorage = CollectionImage.collectionImage()
 
@@ -30,21 +30,21 @@ class PhotosViewController: UIViewController {
         collectionViewLayout()
         TuneCollectionView()
         
-        subscribe()
+//        subscribe()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
 
-    private func subscribe() {
-        imagePublisherFacade.subscribe(self)
-        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
-        collectionView.reloadData()
-    }
+//    private func subscribe() {
+//        imagePublisherFacade.subscribe(self)
+//        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
+//        collectionView.reloadData()
+//    }
     
     private func setupViewController () {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "RemoveSub", style: .plain, target: self, action: #selector(deleteSub))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "RemoveSub", style: .plain, target: self, action: #selector(deleteSub))
         view.backgroundColor = .white
         view.addSubview(collectionView)
         title = "Photo Gallery"
@@ -74,9 +74,9 @@ class PhotosViewController: UIViewController {
         collectionView.delegate = self
     }
     
-    @objc func deleteSub() {
-        imagePublisherFacade.removeSubscription(for: self)
-    }
+//    @objc func deleteSub() {
+//        imagePublisherFacade.removeSubscription(for: self)
+//    }
 
 }
     
@@ -102,10 +102,10 @@ extension PhotosViewController: UICollectionViewDelegate {
     
 }
 
-extension PhotosViewController: ImageLibrarySubscriber {
-    func receive(images: [UIImage]) {
-        photoCollection = images
-        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
-        collectionView.reloadData()
-    }
-}
+//extension PhotosViewController: ImageLibrarySubscriber {
+//    func receive(images: [UIImage]) {
+//        photoCollection = images
+//        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
+//        collectionView.reloadData()
+//    }
+//}
