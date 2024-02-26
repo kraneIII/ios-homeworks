@@ -173,10 +173,12 @@ class FeedViewController: UIViewController {
             case .error:
                 self.guessButtonChecker.backgroundColor = .systemRed
             }
+            
 //            state = .initial
 //            if self.feedModel.check(word: enteredWord) == true {
 //                state = .confirmed
 //                self.guessButtonChecker.backgroundColor = .systemGreen
+            
 //            }
 //            else {
 //                state = .error
