@@ -5,6 +5,8 @@ import StorageService
 
 class FeedViewController: UIViewController {
     
+    private var feedModel: CheckKey
+    
     var post = Post(title: "Something")
     
     //MARK: MVP
@@ -18,17 +20,18 @@ class FeedViewController: UIViewController {
         return keyPassword
     }()
     
-    private lazy var checkGuessButton = CustomButton(title: "tap", backColor: .black, action: { [weak self] in
+    private lazy var checkGuessButton: UIButton = {
+        checkGuessButton = UIButton()
+        checkGuessButton.setTitle("tap", for: .normal)
+        checkGuessButton.backgroundColor = .systemGray3
+        checkGuessButton.layer.cornerRadius = 15
+        checkGuessButton.layer.borderWidth = 0.5
+        checkGuessButton.layer.borderColor = UIColor.black.cgColor
+        checkGuessButton.translatesAutoresizingMaskIntoConstraints = false
+        checkGuessButton.addTarget(self, action: #selector(guessButtonTapped), for: .touchUpInside)
         
-        let feedModel = FeedModel()
-        let passwordWord = self?.keyPassword.text ?? ""
-        if feedModel.check(word: passwordWord) == true {
-            self?.guessButtonChecker.backgroundColor = .systemGreen
-        }
-        else {
-            self?.guessButtonChecker.backgroundColor = .systemRed
-        }
-    })
+        return checkGuessButton
+    }()
     
     private lazy var guessButtonChecker: UILabel = {
         let guessButtonChecker = UILabel()
@@ -91,13 +94,22 @@ class FeedViewController: UIViewController {
         stackView.addArrangedSubview(secondStackButton)
         return stackView
     }()
+
+    init(feedModel: CheckKey ) {
+        self.feedModel = feedModel
+        super .init(nibName: nil, bundle: nil)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubViews()
         setupViewController()
         layout()
+        feedModelBinding()
     }
     
     // MARK: - Layout
@@ -133,18 +145,53 @@ class FeedViewController: UIViewController {
         view.addSubview(checkGuessButton)
         view.addSubview(guessButtonChecker)
         view.addSubview(stackView)
-
+        
     }
     
     // MARK: - Setup
     
     private func setupViewController () {
         view.backgroundColor = .systemCyan
-        title = "Feeds"
+        title = "Feed"
         
     }
     
+    private func feedModelBinding() {
+        let enteredWord = keyPassword.text ?? ""
+        feedModel.currentState = { [ weak self ] state in
+            guard let self else { return }
+            
+            switch state {
+                
+            case .initial:
+                self.guessButtonChecker.backgroundColor = .systemGray5
+            
+            case .confirmed:
+//                if self.feedModel.check(word: enteredWord) == true {
+                self.guessButtonChecker.backgroundColor = .systemGreen
+//                }
+            case .error:
+                self.guessButtonChecker.backgroundColor = .systemRed
+            }
+            
+//            state = .initial
+//            if self.feedModel.check(word: enteredWord) == true {
+//                state = .confirmed
+//                self.guessButtonChecker.backgroundColor = .systemGreen
+//            }
+//            else {
+//                state = .error
+//                self.guessButtonChecker.backgroundColor = .systemRed
+//            }
+        }
+    }
+
     // MARK: - ObjectiveC Func
+    
+    @objc func guessButtonTapped() {
+        feedModel.changeStateIfNeeded()
+//        feedModelBinding()
+    }
     
     @objc private func buttonPressed() {
         let viewController = PostViewController()

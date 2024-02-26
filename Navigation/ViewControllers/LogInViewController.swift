@@ -102,7 +102,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         //        button.setBackgroundImage( UIImage(named: "blue_pixel"), for: .normal)
         button.backgroundColor = UIColor(named: "Color")
-        button.setTitle("Log In", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 0.5
         button.layer.masksToBounds = true
