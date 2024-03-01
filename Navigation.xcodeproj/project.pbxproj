@@ -39,7 +39,6 @@
 		EAF34A8A2B6D4AF10031DE2F /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A892B6D4AF10031DE2F /* Checker.swift */; };
 		EAF34A8B2B6D4DC00031DE2F /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9469292B0FE60E00F6DFB7 /* Post.swift */; };
 		EAF34A8E2B6D56470031DE2F /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A8D2B6D56470031DE2F /* LoginFactory.swift */; };
-		EAF34A912B72BF0D0031DE2F /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = EAF34A902B72BF0D0031DE2F /* iOSIntPackage */; };
 		EAF34A932B7FB3480031DE2F /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A922B7FB3480031DE2F /* CustomButton.swift */; };
 		EAF34A992B813FF30031DE2F /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A982B813FF30031DE2F /* FeedModel.swift */; };
 		EAF34A9B2B84C8080031DE2F /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34A9A2B84C8080031DE2F /* FeedViewModel.swift */; };
@@ -48,6 +47,7 @@
 		EAF34AA42B861A830031DE2F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34AA32B861A830031DE2F /* MainCoordinator.swift */; };
 		EAF34AA72B8BB9A70031DE2F /* FeedFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34AA62B8BB9A70031DE2F /* FeedFlowCoordinator.swift */; };
 		EAF34AA92B8BB9BD0031DE2F /* LoginFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF34AA82B8BB9BD0031DE2F /* LoginFlowCoordinator.swift */; };
+		EAF34AAB2B9208090031DE2F /* iOSIntPackage in Frameworks */ = {isa = PBXBuildFile; productRef = EAF34AAA2B9208090031DE2F /* iOSIntPackage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAF34A912B72BF0D0031DE2F /* iOSIntPackage in Frameworks */,
+				EAF34AAB2B9208090031DE2F /* iOSIntPackage in Frameworks */,
 				EAF34A7E2B62E39D0031DE2F /* SnapKit in Frameworks */,
 				EAF34A6C2B5DBF0C0031DE2F /* StorageService.framework in Frameworks */,
 			);
@@ -373,7 +373,7 @@
 			name = Navigation;
 			packageProductDependencies = (
 				EAF34A7D2B62E39D0031DE2F /* SnapKit */,
-				EAF34A902B72BF0D0031DE2F /* iOSIntPackage */,
+				EAF34AAA2B9208090031DE2F /* iOSIntPackage */,
 			);
 			productName = Navigation;
 			productReference = EA9469062B0E146D00F6DFB7 /* Navigation.app */;
@@ -933,7 +933,7 @@
 			package = EAF34A7C2B62E39D0031DE2F /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		EAF34A902B72BF0D0031DE2F /* iOSIntPackage */ = {
+		EAF34AAA2B9208090031DE2F /* iOSIntPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EAF34A8F2B72A3590031DE2F /* XCRemoteSwiftPackageReference "iOSIntPackage" */;
 			productName = iOSIntPackage;

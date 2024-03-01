@@ -19,13 +19,7 @@ final class FeedViewModel: CheckKey {
         word == secretWord
     }
     
-    func changeStateIfNeeded() {
-        state = .initial
-        if check(word: String()) == true {
-            state = .confirmed
-        }
-        else {
-            state = .error
-        }
+    func changeStateIfNeeded(word: String) {
+        state = check(word: word) ? .confirmed : .error
     }
 }

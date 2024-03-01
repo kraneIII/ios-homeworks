@@ -157,7 +157,7 @@ class FeedViewController: UIViewController {
     }
     
     private func feedModelBinding() {
-        let enteredWord = keyPassword.text ?? ""
+//        let enteredWord = keyPassword.text ?? ""
         feedModel.currentState = { [ weak self ] state in
             guard let self else { return }
             
@@ -165,33 +165,22 @@ class FeedViewController: UIViewController {
                 
             case .initial:
                 self.guessButtonChecker.backgroundColor = .systemGray5
-            
+                
             case .confirmed:
 //                if self.feedModel.check(word: enteredWord) == true {
-                self.guessButtonChecker.backgroundColor = .systemGreen
-//                }
+                self.guessButtonChecker.backgroundColor = .green
             case .error:
                 self.guessButtonChecker.backgroundColor = .systemRed
+                
             }
-            
-//            state = .initial
-//            if self.feedModel.check(word: enteredWord) == true {
-//                state = .confirmed
-//                self.guessButtonChecker.backgroundColor = .systemGreen
-            
-//            }
-//            else {
-//                state = .error
-//                self.guessButtonChecker.backgroundColor = .systemRed
-//            }
         }
     }
-
+    
     // MARK: - ObjectiveC Func
     
     @objc func guessButtonTapped() {
-        feedModel.changeStateIfNeeded()
-//        feedModelBinding()
+        feedModel.changeStateIfNeeded(word: keyPassword.text!)
+        //        feedModelBinding()
     }
     
     @objc private func buttonPressed() {

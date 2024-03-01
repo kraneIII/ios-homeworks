@@ -5,7 +5,7 @@ import UIKit
 class PhotosCollectionViewCell: UICollectionViewCell {
     
     let image = UIImageView()
-    let collectionOfPhotosGenerator = PhotosViewController()
+//    let collectionOfPhotosGenerator = PhotosViewController()
     
     private lazy var postCellImage: UIImageView = {
         let postCellImage = UIImageView()
@@ -49,9 +49,10 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func congigure(with collectionImage: [UIImage]) {
+    func congigure(with collectionImage: CollectionImage) {
+        postCellImage.image = collectionImage.collectionImage
 //        collectionOfPhotosGenerator.receive(images: photoCollection)
-        postCellImage.image = photoCollection.randomElement()
+//        postCellImage.image = photoCollection.randomElement()
         
     }
     
