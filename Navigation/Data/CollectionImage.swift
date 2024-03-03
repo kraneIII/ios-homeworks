@@ -6,6 +6,7 @@ let imageEx = UIImage(named: "Morning")
 let imageExam = UIImage(named: "Congratulations")
 var photoCollection: [UIImage] = [imageExample!, imageEx!, imageExam!]
 
+
 struct CollectionImage {
     
     let id: Int

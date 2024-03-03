@@ -1,6 +1,8 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+    
+    var coordiator: LoginBaseCoordinator?
 
 //    let user = User(login: "", fullName: "", avatar: UIImage(named: "")!, status: "")
     
@@ -22,6 +24,15 @@ class ProfileViewController: UIViewController {
         case post = "PostTableViewCell_ReuseID"
         case header = "HeaderTableViewCell_ReuseID"
         case photos = "PhotosTableViewCell_ReuseID"
+    }
+    
+    init(coordinator: LoginBaseCoordinator) {
+        super.init(nibName: nil, bundle: nil)
+        self.coordiator = coordinator
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {

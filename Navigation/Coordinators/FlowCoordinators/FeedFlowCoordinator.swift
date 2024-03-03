@@ -9,14 +9,20 @@ class FeedFlowCoordinator: FeedBaseCoordinator {
     
     func start()-> UIViewController {
         let feedModel = FeedViewModel()
-        rootViewController = UINavigationController(rootViewController: FeedViewController(feedModel: feedModel))
+        rootViewController = UINavigationController(rootViewController: FeedViewController(feedModel: feedModel, coordinator: self))
         
         return rootViewController
     }
     
-    func showScreen() {
-        parentCoordinator?.moveTo(flow: .login)
+    func switchTabBar() {
+        parentCoordinator?.moveTo(flow: .feed)
         
     }
     
+    func moveToSecondScreen() {
+        
+        let postController = PostViewController(coordinator: self)
+        
+        rootViewController?.pushViewController(postController, animated: true)
+    }
 }

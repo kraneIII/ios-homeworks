@@ -8,16 +8,19 @@ class LoginFlowCoordinator: LoginBaseCoordinator {
     lazy var navigationController = UINavigationController()
     
     func start()-> UIViewController {
-        rootViewController = UINavigationController(rootViewController: LogInViewController())
+        rootViewController = UINavigationController(rootViewController: LogInViewController(coordinator: self))
         
         return rootViewController
     }
     
-    func showScreen() {
-        parentCoordinator?.moveTo(flow: .feed)
+    func switchTabBar() {
+        parentCoordinator?.moveTo(flow: .login)
     }
 
-
+    func moveToSecondScreen() {
+        let profileController = ProfileViewController(coordinator: self)
+        rootViewController?.pushViewController(profileController, animated: true)
+    }
     
     
 }

@@ -27,11 +27,13 @@ extension Coordinator {
 //MARK: - TabBar
 
 protocol FeedBaseCoordinator: Coordinator {
-    func showScreen()
+    func switchTabBar()
+    func moveToSecondScreen()
 }
 
 protocol LoginBaseCoordinator: Coordinator {
-    func showScreen()
+    func switchTabBar()
+    func moveToSecondScreen()
 }
 
 protocol MainBaseCoordinator: Coordinator {

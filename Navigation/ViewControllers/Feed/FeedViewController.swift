@@ -2,8 +2,9 @@ import UIKit
 import StorageService
 
 
-
 class FeedViewController: UIViewController {
+    
+    var coordinator: FeedBaseCoordinator?
     
     private var feedModel: CheckKey
     
@@ -22,11 +23,15 @@ class FeedViewController: UIViewController {
     
     private lazy var checkGuessButton: UIButton = {
         checkGuessButton = UIButton()
-        checkGuessButton.setTitle("tap", for: .normal)
+        checkGuessButton.setTitle("Tap me", for: .normal)
         checkGuessButton.backgroundColor = .systemGray3
         checkGuessButton.layer.cornerRadius = 15
         checkGuessButton.layer.borderWidth = 0.5
         checkGuessButton.layer.borderColor = UIColor.black.cgColor
+        checkGuessButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        checkGuessButton.layer.shadowRadius = 15
+        checkGuessButton.setTitleColor(#colorLiteral(red: 0.4117647059, green: 0.5058823529, blue: 0.5529411765, alpha: 0.85), for: .normal)
+        
         checkGuessButton.translatesAutoresizingMaskIntoConstraints = false
         checkGuessButton.addTarget(self, action: #selector(guessButtonTapped), for: .touchUpInside)
         
@@ -95,9 +100,11 @@ class FeedViewController: UIViewController {
         return stackView
     }()
 
-    init(feedModel: CheckKey ) {
+    init(feedModel: CheckKey, coordinator: FeedBaseCoordinator) {
         self.feedModel = feedModel
-        super .init(nibName: nil, bundle: nil)
+
+        super.init(nibName: nil, bundle: nil)
+        self.coordinator = coordinator
     }
     
     required init?(coder: NSCoder) {
@@ -128,8 +135,8 @@ class FeedViewController: UIViewController {
             keyPassword.heightAnchor.constraint(equalToConstant: 220),
             
             checkGuessButton.topAnchor.constraint(equalTo: keyPassword.bottomAnchor, constant: 10),
-            checkGuessButton.leadingAnchor.constraint(equalTo: keyPassword.leadingAnchor),
-            checkGuessButton.widthAnchor.constraint(equalToConstant: 30),
+            checkGuessButton.leadingAnchor.constraint(equalTo: keyPassword.leadingAnchor, constant: -15),
+            checkGuessButton.widthAnchor.constraint(equalToConstant: 100),
             checkGuessButton.heightAnchor.constraint(equalToConstant: 30),
             
             guessButtonChecker.topAnchor.constraint(equalTo: checkGuessButton.topAnchor),
@@ -157,7 +164,6 @@ class FeedViewController: UIViewController {
     }
     
     private func feedModelBinding() {
-//        let enteredWord = keyPassword.text ?? ""
         feedModel.currentState = { [ weak self ] state in
             guard let self else { return }
             
@@ -167,7 +173,6 @@ class FeedViewController: UIViewController {
                 self.guessButtonChecker.backgroundColor = .systemGray5
                 
             case .confirmed:
-//                if self.feedModel.check(word: enteredWord) == true {
                 self.guessButtonChecker.backgroundColor = .green
             case .error:
                 self.guessButtonChecker.backgroundColor = .systemRed
@@ -180,12 +185,15 @@ class FeedViewController: UIViewController {
     
     @objc func guessButtonTapped() {
         feedModel.changeStateIfNeeded(word: keyPassword.text!)
-        //        feedModelBinding()
     }
     
     @objc private func buttonPressed() {
-        let viewController = PostViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
+        //                self.navigationController?.pushViewController(viewController, animated: true)
+
+        
+        let viewController = PostViewController(coordinator: FeedFlowCoordinator())
+
+        coordinator?.moveToSecondScreen()
         viewController.postTitle = post.title
     }
     

@@ -2,6 +2,7 @@ import UIKit
 import Foundation
 
 protocol LoginViewControllerDelegate {
+    
     func check(login: String, password: String) -> Bool
 }
 
@@ -16,6 +17,8 @@ struct LoginInspector: LoginViewControllerDelegate {
 class LogInViewController: UIViewController, UITextFieldDelegate {
     
     var loginDelegate: LoginViewControllerDelegate?
+    
+    var coordinator: LoginBaseCoordinator?
     
     // MARK: - StackView
     
@@ -114,6 +117,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    init(coordinator: LoginBaseCoordinator) {
+        super.init(nibName: nil, bundle: nil)
+        self.coordinator = coordinator
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         logInViewControllerSetup()
@@ -193,8 +205,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @objc func profileButtonTapped() {
         if checker() == true {
-            let profileViewController = ProfileViewController()
-            self.navigationController?.pushViewController(profileViewController, animated: true)
+            
+            coordinator?.moveToSecondScreen()
+
+//            let profileViewController = ProfileViewController()
+//                  self.navigationController?.pushViewController(profileViewController, animated: true)
         }
         else {
             
