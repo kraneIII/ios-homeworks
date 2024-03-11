@@ -4,11 +4,12 @@ import iOSIntPackage
 
 class PhotosViewController: UIViewController {
     
-    let imagePublisherFacade = ImagePublisherFacade()
     let imageProcessor = ImageProcessor()
+    var imageStorage: [UIImage] = []
+    var imageStorage2: [UIImage] = []
     
-    let photosStorage = CollectionImage.collectionImage()
-
+    let photos = CollectionImage.collectionImage()
+    
     private lazy var collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
@@ -23,34 +24,102 @@ class PhotosViewController: UIViewController {
         
         return collectionView
     }()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
         collectionViewLayout()
         TuneCollectionView()
+        applyImageFilter()
         
-//        subscribe()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
     
-    //    private func subscribe() {
-    //        imagePublisherFacade.subscribe(self)
-    //        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
-    //        collectionView.reloadData()
-    //    }
+    //MARK: - Working with THREAD
     
-    private func createThread() {
-        imageProcessor.processImagesOnThread(sourceImages: photoCollection, filter: .fade, qos: .background, completion: { photo in
-            self.collectionView.reloadData()
-        } )
+    private func castImages(photos: [CollectionImage]) {
+        for image in photos {
+            let photo = UIImage(named: image.id) ?? UIImage()
+            imageStorage.append(photo)
+        }
+    }
+    
+    private func applyImageFilter() {
+        
+        castImages(photos: photos)
+        
+        let start = DispatchTime.now() //MARK: - Start time
+        
+        imageProcessor.processImagesOnThread(sourceImages: imageStorage,
+                                             filter: .fade,
+                                             qos: .userInteractive)
+                                             { imageStorage in
+            
+            DispatchQueue.main.async { [ weak self ] in
+                
+                for image in imageStorage {
+                    guard let image = image else {return}
+                    self?.imageStorage2.append(UIImage(cgImage: image))
+                    
+                    self?.collectionView.reloadData()
+                }
+            }
+            
+            let end = DispatchTime.now() //MARK: - End time
+            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+            print("Time: \(timeInterval)")
+            }
+
+        
+        //MARK: - Background
+//
+//        imageProcessor.processImagesOnThread(sourceImages: imageStorage,
+//                                             filter: .fade,
+//                                             qos: .background)
+//        { imageStorage in
+//
+//            DispatchQueue.main.async { [ weak self ] in
+//
+//                for image in imageStorage {
+//                    guard let image = image else {return}
+//                    self?.imageStorage2.append(UIImage(cgImage: image))
+//
+//                    self?.collectionView.reloadData()
+//                }
+//            }
+//
+//            let end = DispatchTime.now() //MARK: - End time
+//            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+//            print("Time: \(timeInterval)")
+//        }
+
+        
+        //MARK: - UserInitiated
+//        imageProcessor.processImagesOnThread(sourceImages: imageStorage,
+//                                             filter: .fade,
+//                                             qos: .userInitiated)
+//                                             { imageStorage in
+//            
+//            DispatchQueue.main.async { [ weak self ] in
+//                
+//                for image in imageStorage {
+//                    guard let image = image else {return}
+//                    self?.imageStorage2.append(UIImage(cgImage: image))
+//                    
+//                    self?.collectionView.reloadData()
+//                }
+//            }
+//            
+//            let end = DispatchTime.now() //MARK: - End time
+//            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+//            print("Time: \(timeInterval)")
+//            }
     }
     
     private func setupViewController () {
-        //        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "RemoveSub", style: .plain, target: self, action: #selector(deleteSub))
         view.backgroundColor = .white
         view.addSubview(collectionView)
         title = "Photo Gallery"
@@ -80,22 +149,18 @@ class PhotosViewController: UIViewController {
         collectionView.delegate = self
     }
     
-//    @objc func deleteSub() {
-//        imagePublisherFacade.removeSubscription(for: self)
-//    }
-
 }
     
 extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photosStorage.count
+        imageStorage2.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID.photos.rawValue, for: indexPath) as! PhotosCollectionViewCell
        
-        let photo = photosStorage[indexPath.row]
-        cell.congigure(with: photo)
+        cell.image.image = imageStorage2[indexPath.item]
+//        let photo = photosStorage[indexPath.row]
 //        cell.congigure(with: photoCollection)
 
         return cell
@@ -106,11 +171,3 @@ extension PhotosViewController: UICollectionViewDataSource {
 extension PhotosViewController: UICollectionViewDelegate {
     
 }
-
-//extension PhotosViewController: ImageLibrarySubscriber {
-//    func receive(images: [UIImage]) {
-//        photoCollection = images
-//        imagePublisherFacade.addImagesWithTimer(time: 0.5, repeat: 10, userImages: photoCollection)
-//        collectionView.reloadData()
-//    }
-//}
