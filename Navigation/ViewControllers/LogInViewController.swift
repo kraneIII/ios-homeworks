@@ -1,0 +1,295 @@
+import UIKit
+import Foundation
+
+protocol LoginViewControllerDelegate {
+    
+    func check(login: String, password: String) -> Bool
+}
+
+struct LoginInspector: LoginViewControllerDelegate {
+    func check(login: String, password: String) -> Bool {
+        return Checker.shared.check(loginn: login, passwordd: password)
+    }
+    
+}
+
+
+class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    var loginDelegate: LoginViewControllerDelegate?
+    
+    var coordinator: LoginBaseCoordinator?
+    
+    // MARK: - StackView
+    
+    private lazy var stackView: UIStackView = { [unowned self] in
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.clipsToBounds = true
+        stackView.axis = .vertical
+        stackView.spacing = 0.5
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        
+        
+        
+        stackView.addArrangedSubview(emailField)
+        stackView.addArrangedSubview(passwordField)
+        return stackView
+    }()
+    
+    // MARK: - LogoView
+    
+    private lazy var logoView: UIImageView = {
+        let logoView = UIImageView(image: UIImage(named: "mainLogo" ))
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        return logoView
+    }()
+    
+    // MARK: - TextField
+    
+    private lazy var emailField: UITextField = {
+        
+        let textField = UITextField()
+        textField.placeholder = "   Email or phone"
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderWidth = 0.5
+        textField.layer.cornerRadius = 10
+        textField.textColor = .black
+        textField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        textField.tintColor = UIColor(named: "Color")
+        textField.autocapitalizationType = .none
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.backgroundColor = .systemGray6
+        textField.autocorrectionType = UITextAutocorrectionType.no
+        textField.keyboardType = UIKeyboardType.default
+        textField.returnKeyType = UIReturnKeyType.next
+        textField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        textField.delegate = self
+        
+        return textField
+    }()
+    
+    private lazy var passwordField: UITextField = {
+        
+        let passwordTextField = UITextField()
+        passwordTextField.placeholder = "   Password"
+        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passwordTextField.layer.borderWidth = 0.5
+        passwordTextField.layer.cornerRadius = 10
+        passwordTextField.textColor = .black
+        passwordTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        passwordTextField.tintColor = UIColor(named: "Color")
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.backgroundColor = .systemGray6
+        passwordTextField.autocorrectionType = UITextAutocorrectionType.no
+        passwordTextField.keyboardType = UIKeyboardType.default
+        passwordTextField.returnKeyType = UIReturnKeyType.done
+        passwordTextField.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.resignFirstResponder()
+        passwordTextField.delegate = self
+        
+        return passwordTextField
+    }()
+    
+    private lazy var indicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        return indicator
+    }()
+    
+    // MARK: - Button
+    
+    private lazy var bruteForce: UIButton = {
+        let bruteForce = UIButton()
+        bruteForce.setTitle("Подобрать пароль", for: .normal)
+        bruteForce.setTitleColor(.gray, for: .normal)
+        bruteForce.layer.cornerRadius = 10
+        bruteForce.layer.shadowColor = UIColor.white.cgColor
+        bruteForce.layer.shadowOpacity = 0.5
+        bruteForce.layer.shadowOffset = CGSize(width: 5, height: 5)
+        bruteForce.layer.shadowRadius = 4
+        bruteForce.translatesAutoresizingMaskIntoConstraints = false
+        bruteForce.backgroundColor = .white
+        bruteForce.addTarget(self, action: #selector(brutePassword), for: .touchUpInside)
+       
+        return bruteForce
+    }()
+    
+    
+    private lazy var button: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 10
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundImage(for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //        button.setBackgroundImage( UIImage(named: "blue_pixel"), for: .normal)
+        button.backgroundColor = UIColor(named: "Color")
+        button.setTitle("Login", for: .normal)
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 0.5
+        button.layer.masksToBounds = true
+        button.layer.shadowOpacity = 0.5
+        button.layer.shadowColor = UIColor.gray.cgColor
+        button.layer.shadowRadius = 3
+        button.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside )
+        
+        return button
+    }()
+    
+    init(coordinator: LoginBaseCoordinator) {
+        super.init(nibName: nil, bundle: nil)
+        self.coordinator = coordinator
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        logInViewControllerSetup()
+        addSubViews()
+        Layout()
+
+        
+        let tapGuester = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGuester)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(moveViewsDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    // MARK: - HideKeyboardUsingButton
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        passwordField.resignFirstResponder()
+        emailField.resignFirstResponder()
+
+        return true
+    }
+    
+
+    //MARK: - Private
+        
+    private func addSubViews() {
+        view.addSubview(button)
+        view.addSubview(logoView)
+        view.addSubview(stackView)
+        view.addSubview(bruteForce)
+        view.addSubview(indicator)
+    }
+    
+    private func logInViewControllerSetup() {
+        view.backgroundColor = .white
+        title = "Log In"
+//                tabBarController?.tabBar.isHidden = true
+    }
+       
+    private func Layout() {
+        addSubViews()
+        NSLayoutConstraint.activate([
+            logoView.widthAnchor.constraint(equalToConstant: 100),
+            logoView.heightAnchor.constraint(equalToConstant: 100),
+            logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            
+            stackView.heightAnchor.constraint(equalToConstant: 100),
+            stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+            stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            stackView.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
+            
+            button.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+            button.heightAnchor.constraint(equalToConstant: 50),
+            button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+            button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+            
+            bruteForce.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
+            bruteForce.leftAnchor.constraint(equalTo: button.leftAnchor,constant: 50),
+            bruteForce.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -50),
+            bruteForce.heightAnchor.constraint(equalToConstant: 30),
+            
+            indicator.heightAnchor.constraint(equalToConstant: 30),
+            indicator.widthAnchor.constraint(equalToConstant: 30),
+            indicator.leftAnchor.constraint(equalTo: bruteForce.rightAnchor,constant: -30),
+            indicator.topAnchor.constraint(equalTo: bruteForce.topAnchor)
+            
+        ])
+    }
+    
+    private func alert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Логин или пароль введены неверно", preferredStyle: .alert)
+        let alertAct = UIAlertAction(title: "Ок", style: .default)
+        
+        alert.addAction(alertAct)
+        present(alert, animated: true)
+    }
+    
+    private func checker() -> Bool {
+        LoginInspector().check(login: emailField.text ?? "", password: passwordField.text ?? "")
+    }
+    
+     func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    @objc func profileButtonTapped() {
+        if checker() == true {
+            
+            coordinator?.moveToSecondScreen()
+
+//            let profileViewController = ProfileViewController()
+//                  self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+        else {
+            
+            alert()
+            emailField.text = ""
+            passwordField.text = ""
+        }
+    }
+    
+    // MARK: - MoveViewsWhenKeyboardAppear
+    
+    @objc func brutePassword() {
+        
+        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive)
+            
+            self.indicator.startAnimating()
+        brute.async {
+            
+            //MARK: - код для подбора пароля
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                self.indicator.stopAnimating()
+            })
+            
+        }
+    }
+
+    @objc func moveViewsUp(notification: NSNotification){
+        
+        view.frame.origin.y = -100
+    }
+    
+    @objc func moveViewsDown(notification: NSNotification){
+        view.frame.origin.y = 100
+    }
+    
+    // MARK: - HideKeyboardUsingTapGestureRecognizer
+    
+    @objc func hideKeyboard() {
+        emailField.resignFirstResponder()
+        passwordField.resignFirstResponder()
+    }
+
+    
+    
+}
