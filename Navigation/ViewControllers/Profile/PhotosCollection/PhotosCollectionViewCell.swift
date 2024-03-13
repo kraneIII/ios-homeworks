@@ -28,7 +28,8 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
     
     private func addSubView() {
-        addSubview(image)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(image)
         contentView.addSubview(postCellImage)
     }
     
@@ -38,13 +39,13 @@ class PhotosCollectionViewCell: UICollectionViewCell {
         addSubView()
         NSLayoutConstraint.activate([
         
-            postCellImage.widthAnchor.constraint(equalToConstant: 120),
-            postCellImage.heightAnchor.constraint(equalToConstant: 120),
+            image.widthAnchor.constraint(equalToConstant: 120),
+            image.heightAnchor.constraint(equalToConstant: 120),
             
-            postCellImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            postCellImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            postCellImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            postCellImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            image.topAnchor.constraint(equalTo: contentView.topAnchor),
+            image.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
         ])
     }

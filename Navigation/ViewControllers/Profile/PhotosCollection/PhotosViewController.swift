@@ -52,71 +52,75 @@ class PhotosViewController: UIViewController {
         castImages(photos: photos)
         
         let start = DispatchTime.now() //MARK: - Start time
-        
+//        
         imageProcessor.processImagesOnThread(sourceImages: imageStorage,
-                                             filter: .fade,
+                                             filter: .chrome,
                                              qos: .userInteractive)
-                                             { imageStorage in
+        { imageStorage in
             
             DispatchQueue.main.async { [ weak self ] in
                 
                 for image in imageStorage {
                     guard let image = image else {return}
                     self?.imageStorage2.append(UIImage(cgImage: image))
-                    
-                    self?.collectionView.reloadData()
                 }
+                self?.collectionView.reloadData()
+                
             }
             
             let end = DispatchTime.now() //MARK: - End time
             let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
             print("Time: \(timeInterval)")
-            }
-
+            
+            //MARK: - Time: 0.208933416
+//        }
+        
         
         //MARK: - Background
-//
-//        imageProcessor.processImagesOnThread(sourceImages: imageStorage,
-//                                             filter: .fade,
-//                                             qos: .background)
-//        { imageStorage in
-//
-//            DispatchQueue.main.async { [ weak self ] in
-//
-//                for image in imageStorage {
-//                    guard let image = image else {return}
-//                    self?.imageStorage2.append(UIImage(cgImage: image))
-//
-//                    self?.collectionView.reloadData()
+        //
+//                imageProcessor.processImagesOnThread(sourceImages: imageStorage,
+//                                                     filter: .fade,
+//                                                     qos: .background)
+//                { imageStorage in
+//        
+//                    DispatchQueue.main.async { [ weak self ] in
+//        
+//                        for image in imageStorage {
+//                            guard let image = image else {return}
+//                            self?.imageStorage2.append(UIImage(cgImage: image))
+//        
+//                            self?.collectionView.reloadData()
+//                        }
+//                    }
+//        
+//                    let end = DispatchTime.now() //MARK: - End time
+//                    let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+//                    print("Time: \(timeInterval)")
+        //MARK: -Time: 0.771477291
 //                }
-//            }
-//
-//            let end = DispatchTime.now() //MARK: - End time
-//            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
-//            print("Time: \(timeInterval)")
-//        }
-
         
-        //MARK: - UserInitiated
-//        imageProcessor.processImagesOnThread(sourceImages: imageStorage,
-//                                             filter: .fade,
-//                                             qos: .userInitiated)
-//                                             { imageStorage in
-//            
-//            DispatchQueue.main.async { [ weak self ] in
-//                
-//                for image in imageStorage {
-//                    guard let image = image else {return}
-//                    self?.imageStorage2.append(UIImage(cgImage: image))
-//                    
-//                    self?.collectionView.reloadData()
-//                }
-//            }
-//            
-//            let end = DispatchTime.now() //MARK: - End time
-//            let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
-//            print("Time: \(timeInterval)")
-//            }
+        
+//        MARK: - UserInitiated
+//                imageProcessor.processImagesOnThread(sourceImages: imageStorage,
+//                                                     filter: .fade,
+//                                                     qos: .userInitiated)
+//                                                     { imageStorage in
+//        
+//                    DispatchQueue.main.async { [ weak self ] in
+//        
+//                        for image in imageStorage {
+//                            guard let image = image else {return}
+//                            self?.imageStorage2.append(UIImage(cgImage: image))
+//        
+//                            self?.collectionView.reloadData()
+//                        }
+//                    }
+//        
+//                    let end = DispatchTime.now() //MARK: - End time
+//                    let timeInterval = Double(end.uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000_000
+//                    print("Time: \(timeInterval)")
+                    }
+        //MARK: -Time: 0.219024667
     }
     
     private func setupViewController () {
@@ -150,19 +154,19 @@ class PhotosViewController: UIViewController {
     }
     
 }
-    
+
 extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         imageStorage2.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID.photos.rawValue, for: indexPath) as! PhotosCollectionViewCell
-       
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID.photos.rawValue, for: indexPath) as! PhotosCollectionViewCell
+        
         cell.image.image = imageStorage2[indexPath.item]
-//        let photo = photosStorage[indexPath.row]
-//        cell.congigure(with: photoCollection)
-
+        //        let photo = photosStorage[indexPath.row]
+        //        cell.congigure(with: photoCollection)
+        
         return cell
     }
     

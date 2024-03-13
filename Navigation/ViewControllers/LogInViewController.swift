@@ -94,7 +94,32 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return passwordTextField
     }()
     
+    private lazy var indicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        indicator.style = .medium
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        return indicator
+    }()
+    
     // MARK: - Button
+    
+    private lazy var bruteForce: UIButton = {
+        let bruteForce = UIButton()
+        bruteForce.setTitle("Подобрать пароль", for: .normal)
+        bruteForce.setTitleColor(.gray, for: .normal)
+        bruteForce.layer.cornerRadius = 10
+        bruteForce.layer.shadowColor = UIColor.white.cgColor
+        bruteForce.layer.shadowOpacity = 0.5
+        bruteForce.layer.shadowOffset = CGSize(width: 5, height: 5)
+        bruteForce.layer.shadowRadius = 4
+        bruteForce.translatesAutoresizingMaskIntoConstraints = false
+        bruteForce.backgroundColor = .white
+        bruteForce.addTarget(self, action: #selector(brutePassword), for: .touchUpInside)
+       
+        return bruteForce
+    }()
     
     
     private lazy var button: UIButton = {
@@ -158,6 +183,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(button)
         view.addSubview(logoView)
         view.addSubview(stackView)
+        view.addSubview(bruteForce)
+        view.addSubview(indicator)
     }
     
     private func logInViewControllerSetup() {
@@ -183,6 +210,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             button.heightAnchor.constraint(equalToConstant: 50),
             button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+            
+            bruteForce.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
+            bruteForce.leftAnchor.constraint(equalTo: button.leftAnchor,constant: 50),
+            bruteForce.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -50),
+            bruteForce.heightAnchor.constraint(equalToConstant: 30),
+            
+            indicator.heightAnchor.constraint(equalToConstant: 30),
+            indicator.widthAnchor.constraint(equalToConstant: 30),
+            indicator.leftAnchor.constraint(equalTo: bruteForce.rightAnchor,constant: -30),
+            indicator.topAnchor.constraint(equalTo: bruteForce.topAnchor)
             
         ])
     }
@@ -220,6 +257,22 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - MoveViewsWhenKeyboardAppear
+    
+    @objc func brutePassword() {
+        
+        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive)
+            
+            self.indicator.startAnimating()
+        brute.async {
+            
+            //MARK: - код для подбора пароля
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                self.indicator.stopAnimating()
+            })
+            
+        }
+    }
 
     @objc func moveViewsUp(notification: NSNotification){
         

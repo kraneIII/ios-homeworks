@@ -17,13 +17,13 @@ struct CollectionImage {
 extension CollectionImage {
     
     static func collectionImage() -> [CollectionImage] {[
-        CollectionImage(id: "1", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "2", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "3", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "4", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "5", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "6", collectionImage: UIImage(named: "Win")!),
-        CollectionImage(id: "7", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
+        CollectionImage(id: "Win", collectionImage: UIImage(named: "Win")!),
 //        CollectionImage(id: 8, collectionImage: UIImage(named: "Win")!),
 //        CollectionImage(id: 9, collectionImage: UIImage(named: "Win")!),
 //        CollectionImage(id: 10, collectionImage: UIImage(named: "Win")!),
