@@ -6,7 +6,7 @@ class Checker {
     static var shared = Checker()
     
     private let login: String = ""
-    private let password: String = ""
+    private let password: String = "some"
     
     private init() {}
     

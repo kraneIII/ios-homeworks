@@ -3,6 +3,7 @@ import Foundation
 
 protocol LoginViewControllerDelegate {
     
+
     func check(login: String, password: String) -> Bool
 }
 
@@ -13,8 +14,73 @@ struct LoginInspector: LoginViewControllerDelegate {
     
 }
 
+extension String {
+    var numbers: String { return "1234567890"}
+    var letter: String { return "abcdefghijklmnopqrstuvwxyz"}
+    var upperLetter: String { return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}
+    var punctuation: String { return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" }
+    var letters:     String { return letter + upperLetter }
+    var printable:   String { return numbers + letters + punctuation }
+    
+    mutating func replace(at index: Int, with character: Character) {
+        var stringArray = Array(self)
+        stringArray[index] = character
+        self = String(stringArray)
+    }
+
+}
+
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    //MARK: - BruteForce
+    
+    func bruteForce(unlockPassword: String) {
+        
+        let allowedPasswords: [String] = String().printable.map {
+        String($0) }
+        
+        var password: String = ""
+        
+        while password != unlockPassword {
+            password = generateBruteForce(password, fromArray: allowedPasswords)
+        }
+        
+        print(password)
+    }
+    
+    func indexOf(character: Character, _ array: [String]) -> Int {
+        return array.firstIndex(of: String(character))!
+    }
+
+    func characterAt(index: Int, _ array: [String]) -> Character {
+        return index < array.count ? Character(array[index])
+                                   : Character("")
+    }
+    
+    func generateBruteForce(_ string: String, fromArray array: [String]) -> String {
+        var str: String = string
+
+        if str.count <= 0 {
+            str.append(characterAt(index: 0, array))
+        }
+        else {
+            str.replace(at: str.count - 1,
+                        with: characterAt(index: (indexOf(character: str.last!, array) + 1) % array.count, array))
+
+            if indexOf(character: str.last!, array) == 0 {
+                str = String(generateBruteForce(String(str.dropLast()), fromArray: array)) + String(str.last!)
+            }
+        }
+
+        return str
+    }
+
+    
+    
+    
+    //MARK: - BruteForceEnd
+
     
     var loginDelegate: LoginViewControllerDelegate?
     
@@ -105,7 +171,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Button
     
-    private lazy var bruteForce: UIButton = {
+    private lazy var bruteForceButton: UIButton = {
         let bruteForce = UIButton()
         bruteForce.setTitle("Подобрать пароль", for: .normal)
         bruteForce.setTitleColor(.gray, for: .normal)
@@ -183,7 +249,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(button)
         view.addSubview(logoView)
         view.addSubview(stackView)
-        view.addSubview(bruteForce)
+        view.addSubview(bruteForceButton)
         view.addSubview(indicator)
     }
     
@@ -211,15 +277,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
             
-            bruteForce.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
-            bruteForce.leftAnchor.constraint(equalTo: button.leftAnchor,constant: 50),
-            bruteForce.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -50),
-            bruteForce.heightAnchor.constraint(equalToConstant: 30),
+            bruteForceButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
+            bruteForceButton.leftAnchor.constraint(equalTo: button.leftAnchor,constant: 50),
+            bruteForceButton.rightAnchor.constraint(equalTo: button.rightAnchor, constant: -50),
+            bruteForceButton.heightAnchor.constraint(equalToConstant: 30),
             
             indicator.heightAnchor.constraint(equalToConstant: 30),
             indicator.widthAnchor.constraint(equalToConstant: 30),
-            indicator.leftAnchor.constraint(equalTo: bruteForce.rightAnchor,constant: -30),
-            indicator.topAnchor.constraint(equalTo: bruteForce.topAnchor)
+            indicator.leftAnchor.constraint(equalTo: bruteForceButton.rightAnchor,constant: -30),
+            indicator.topAnchor.constraint(equalTo: bruteForceButton.topAnchor)
             
         ])
     }
@@ -257,20 +323,27 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - MoveViewsWhenKeyboardAppear
+    //MARK: - код для подбора пароля
+
     
     @objc func brutePassword() {
         
-        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive)
+//        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive, attributes: .concurrent)
+        let workItem = DispatchWorkItem {
+            self.bruteForce(unlockPassword: "some")
+        }
+  
+        self.indicator.startAnimating()
+        
+        DispatchQueue.global().async(execute: workItem)
+//        brute.async(execute: workItem)
+        workItem.notify(queue: .main){
             
-            self.indicator.startAnimating()
-        brute.async {
+            self.passwordField.isSecureTextEntry = false
             
-            //MARK: - код для подбора пароля
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
-                self.indicator.stopAnimating()
-            })
-            
+            self.indicator.stopAnimating()
+            self.passwordField.text = "some"
+
         }
     }
 
