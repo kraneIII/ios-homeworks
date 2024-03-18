@@ -3,7 +3,6 @@ import Foundation
 
 protocol LoginViewControllerDelegate {
     
-
     func check(login: String, password: String) -> Bool
 }
 
@@ -32,6 +31,25 @@ extension String {
 
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
+    
+    private var timer: Timer?
+    private var counter = 20
+    
+    private lazy var timerLabel: UILabel = {
+        let timerLabel = UILabel()
+        timerLabel.text = "20"
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        timerLabel.textColor = .gray
+        
+        return timerLabel
+    }()
+    
+    private lazy var timerCompletionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
     
     //MARK: - BruteForce
     
@@ -251,6 +269,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(stackView)
         view.addSubview(bruteForceButton)
         view.addSubview(indicator)
+        view.addSubview(timerLabel)
+        view.addSubview(timerCompletionLabel)
     }
     
     private func logInViewControllerSetup() {
@@ -285,7 +305,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             indicator.heightAnchor.constraint(equalToConstant: 30),
             indicator.widthAnchor.constraint(equalToConstant: 30),
             indicator.leftAnchor.constraint(equalTo: bruteForceButton.rightAnchor,constant: -30),
-            indicator.topAnchor.constraint(equalTo: bruteForceButton.topAnchor)
+            indicator.topAnchor.constraint(equalTo: bruteForceButton.topAnchor),
+            
+            timerLabel.topAnchor.constraint(equalTo: indicator.topAnchor,constant: 5),
+            timerLabel.leftAnchor.constraint(equalTo: indicator.rightAnchor, constant: 5),
+            
+            timerCompletionLabel.topAnchor.constraint(equalTo: bruteForceButton.bottomAnchor, constant: 10),
+            timerCompletionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timerCompletionLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            
             
         ])
     }
@@ -324,28 +352,74 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - MoveViewsWhenKeyboardAppear
     //MARK: - код для подбора пароля
-
     
     @objc func brutePassword() {
         
-//        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive, attributes: .concurrent)
         let workItem = DispatchWorkItem {
             self.bruteForce(unlockPassword: "some")
         }
-  
+
+        self.timerLabel.isHidden = false
         self.indicator.startAnimating()
-        
+        self.timerCompletionLabel.text = nil
         DispatchQueue.global().async(execute: workItem)
-//        brute.async(execute: workItem)
         workItem.notify(queue: .main){
             
             self.passwordField.isSecureTextEntry = false
             
             self.indicator.stopAnimating()
-            self.passwordField.text = "some"
-
+            self.passwordField.text = "   some"
+            workItem.cancel()
+            
         }
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [weak self] timer in
+            guard let self else { return }
+            counter -= 1
+            self.timerLabel.text = "\(counter)"
+            if counter <= 0 {
+                
+                workItem.cancel()
+                self.indicator.stopAnimating()
+                timer.invalidate()
+                self.timerLabel.isHidden = true
+                self.timerCompletionLabel.textColor = .red
+                self.timerCompletionLabel.text = "Error"
+                self.timer = nil
+                self.counter = 20
+            }
+            
+            if workItem.isCancelled == true {
+                self.timerLabel.isHidden = true
+                self.timerCompletionLabel.textColor = .systemBlue
+                self.timerCompletionLabel.text = "Password found"
+                self.timer?.invalidate()
+                self.timer = nil
+                self.counter = 20
+            }
+            
+            
+        })
     }
+        
+//        let brute = DispatchQueue(label: "passwordBrute", qos: .userInteractive, attributes: .concurrent)
+//        let workItem = DispatchWorkItem {
+//            self.bruteForce(unlockPassword: "some")
+//        }
+  
+//        self.indicator.startAnimating()
+        
+//        DispatchQueue.global().async(execute: workItem)
+////        brute.async(execute: workItem)
+//        workItem.notify(queue: .main){
+//            
+//            self.passwordField.isSecureTextEntry = false
+//            
+//            self.indicator.stopAnimating()
+//            self.passwordField.text = "some"
+//
+//        }
+//    }
 
     @objc func moveViewsUp(notification: NSNotification){
         
